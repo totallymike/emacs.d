@@ -5,3 +5,6 @@
           (use-package dash
             :ensure t)
           (bind-key "C-x g" 'magit-status)))
+
+(use-package git-timemachine
+  :ensure git-timemachine)
