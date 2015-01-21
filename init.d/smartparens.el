@@ -1,4 +1,7 @@
 (use-package smartparens
   :ensure smartparens
   :config
-  (smartparens-global-mode 1))
+  (progn
+    (require 'smartparens-config)
+    (smartparens-global-mode 1)))
+    
