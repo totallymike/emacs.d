@@ -4,4 +4,3 @@
   (progn
     (require 'smartparens-config)
     (smartparens-global-mode 1)))
-    
