@@ -1,6 +1,7 @@
 autosave/
 elpa/
 saves/
+undo-tree.d/
 helm-adaptive-history
 projectile-bookmarks.eld
 projectile.cache
