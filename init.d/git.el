@@ -6,5 +6,9 @@
             :ensure t)
           (bind-key "C-x g" 'magit-status)))
 
+(use-package gist
+  :ensure gist
+  :commands (gist-buffer gist-region gist-list))
+
 (use-package git-timemachine
   :ensure git-timemachine)
