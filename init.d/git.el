@@ -12,3 +12,7 @@
 
 (use-package git-timemachine
   :ensure git-timemachine)
+
+(use-package git-messenger
+  :ensure t
+  :bind (("C-x v p" . git-messenger:popup-message)))
