@@ -1,4 +1,6 @@
 autosave/
 elpa/
 saves/
+helm-adaptive-history
 projectile-bookmarks.eld
+projectile.cache
