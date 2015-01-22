@@ -38,6 +38,7 @@
  '(tool-bar-mode nil)
  '(undo-limit 16000000)
  '(undo-strong-limit 26000000)
+ '(undo-tree-auto-save-history t)
  '(undo-tree-history-directory-alist (quote (("." . "~/.emacs.d/undo-tree.d"))))
  '(undo-tree-visualizer-diff t)
  '(uniquify-ignore-buffers-re "^\\\\*")
