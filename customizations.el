@@ -27,6 +27,10 @@
  '(linum-delay t)
  '(linum-format "%4d")
  '(magit-status-buffer-switch-function (quote switch-to-buffer))
+ '(org-hide-leading-stars t)
+ '(org-modules
+   (quote
+    (org-bbdb org-bibtex org-docview org-gnus org-info org-irc org-mhe org-rmail org-w3m org-man)))
  '(rspec-use-rake-when-possible nil)
  '(scroll-bar-mode nil)
  '(scroll-error-top-bottom t)
