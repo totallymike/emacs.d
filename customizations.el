@@ -30,6 +30,9 @@
  '(rspec-use-rake-when-possible nil)
  '(scroll-bar-mode nil)
  '(scroll-error-top-bottom t)
+ '(sh-basic-offset 2)
+ '(sh-indent-after-else nil)
+ '(sh-indentation 2)
  '(show-trailing-whitespace t)
  '(tab-width 2)
  '(tool-bar-mode nil)
@@ -43,7 +46,7 @@
  '(whitespace-action (quote (cleanup)))
  '(whitespace-style
    (quote
-    (face trailing space-before-tab empty space-after-tab tab-mark))))
+    (face trailing space-before-tab space-after-tab tab-mark))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
