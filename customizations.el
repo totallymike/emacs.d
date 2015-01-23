@@ -55,6 +55,7 @@
  '(web-mode-enable-auto-quoting nil)
  '(web-mode-markup-indent-offset 2)
  '(whitespace-action (quote (cleanup)))
+ '(whitespace-global-modes (quote (not term-mode)))
  '(whitespace-style
    (quote
     (face trailing space-before-tab space-after-tab tab-mark))))
