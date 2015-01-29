@@ -1,5 +1,5 @@
 #+TITLE: Michael Westbom's Emacs configuration
-#+OPTIONS: toc:4 h:4
+#+OPTIONS: toc:3 h:3
 
 * Configuration
 <<babel-init>>
@@ -29,13 +29,17 @@ Now we'll enable John Wiegley's phenomenal [[https://github.com/jwiegley/use-pac
 #+end_src
 
 ** General configuration
-
+*** No blinking.
+    Seriously.
+    #+begin_src emacs_lisp
+    (blink-cursor-mode 0)
+    #+end_src
 *** Help and discoverability.
 
 Let's enable guide-key.  This tells you what possible bindings
 are available based on what you've already pressed.
 
-#+begin_src emacs-lisp
+#+Begin_src emacs-lisp
   (use-package guide-key-tip
     :ensure t
     :init
@@ -49,23 +53,23 @@ are available based on what you've already pressed.
       (guide-key-mode 1)))
 #+end_src
 
-*** Let's throw in some default stuff.
-
-    Let's add a few basic settings:
-    - We just about always want line numbers.
-    - Also add line and column numbers to mode line
-    - Don't blink the cursor
-    - Don't make me type 'yes'.  'y' is fine for prompts.
+*** Line numbers
+    I like having line numbers in the gutter.
 
 #+begin_src emacs-lisp
-  (linum-mode)
-  (line-number-mode t)
-  (column-number-mode t)
-  (size-indication-mode t)
-  (blink-cursor-mode 0)
-  (fset 'yes-or-no-p 'y-or-n-p)
+;; Add line numbers to gutter
+(linum-mode)
+;; Add line/column numbers to modeline
+(line-number-mode t)
+(column-number-mode t)
 #+end_src
 
+*** Change "yes or no" to "y or n"
+    y is just fine, thank you.
+
+    #+begin_src emacs-lisp
+    (fset 'yes-or-no-p 'y-or-n-p)
+    #+end_src
 *** Color scheme
 
     Zenburn. Set it.  If it's not there, download it.
@@ -121,3 +125,5 @@ Later on I'll insert them into this .org file.
         (load file)))
 #+end_src
 
+**
+** Programming
