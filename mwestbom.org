@@ -347,6 +347,25 @@ this out eventually.
       (setq org-use-speed-commands t)
     #+END_SRC
 
+*** Publishing
+**** Section numbers
+     Don't bother adding section numbers.
+     #+BEGIN_SRC emacs-lisp
+       (setq org-export-with-section-numbers nil)
+       (setq org-html-include-timestamps nil)
+       (setq org-export-with-sub-superscripts nil)
+     #+END_SRC
+**** Publish config file
+     #+BEGIN_SRC emacs-lisp
+       (defun mcw/org-share-emacs ()
+         "Publish emacs config"
+         (interactive)
+         (with-current-buffer (find-file "~/.emacs.d/mwestbom.org")
+           (save-restriction
+             (save-excursion
+               (widen)
+               (org-html-export-to-html)))))
+     #+END_SRC
 ** Programming
 *** Git
     Emacs has so many fantastic get-related tools.
