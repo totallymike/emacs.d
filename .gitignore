@@ -2,6 +2,7 @@ autosave/
 elpa/
 saves/
 undo-tree.d/
+mwestbom.el
 history
 helm-adaptive-history
 projectile-bookmarks.eld
