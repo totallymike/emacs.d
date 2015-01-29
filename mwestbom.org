@@ -407,6 +407,45 @@ Later on I'll insert them into this .org file.
                    (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)))
      #+END_SRC
 *** Various modes
+**** Ruby
+***** enh-ruby-mode
+      Replace standard ruby mode with enh-ruby-mode.  I like its indentation engine better.
+      #+BEGIN_SRC emacs-lisp
+        (use-package enh-ruby-mode
+          :ensure t
+          :diminish enh-ruby-mode
+          :commands enh-ruby-mode
+          :init
+          (progn
+            (add-to-list 'auto-mode-alist '("\\.rb$" . enh-ruby-mode))
+            (add-to-list 'interpreter-mode-alist '("ruby" . enh-ruby-mode))))
+      #+END_SRC
+
+***** rspec mode
+      Run rspec from emacs.  I love this so much.
+      #+BEGIN_SRC emacs-lisp
+        (use-package rspec-mode
+          :ensure rspec-mode
+          :diminish rspec-mode
+          :commands rspec-mode
+          :init
+          (progn
+            (add-hook 'enh-ruby-mode-hook 'rspec-mode))
+          :config
+          (progn
+            (setq rspec-command-options "--fail-fast --format documentation")
+            (inf-ruby-switch-setup)))
+      #+END_SRC
+
+***** rbenv
+      #+BEGIN_SRC emacs-lisp
+        (use-package rbenv
+          :ensure t
+          :commands rbenv-use-global
+          :init
+          (progn
+            (add-hook 'enh-ruby-mode-hook 'rbenv-use-global)))
+      #+END_SRC
 **** Markdown
     Enable markdown mode
     #+BEGIN_SRC emacs-lisp
