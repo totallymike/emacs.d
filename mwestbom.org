@@ -1,11 +1,11 @@
 #+TITLE: Michael Westbom's Emacs configuration
-#+OPTIONS: toc:3 h:3
+#+OPTIONS: toc:4 h:4
 
 * Configuration
 <<babel-init>>
 
-** Initialization
-
+** Package management
+*** Sources
 Let's begin by setting up the package system.  First we'll disable it,
 then make sure melpa, the de-facto package repo, is enabled.
 
@@ -18,6 +18,7 @@ then make sure melpa, the de-facto package repo, is enabled.
   (package-initialize)
 #+end_src
 
+*** use-package
 Now we'll enable John Wiegley's phenomenal [[https://github.com/jwiegley/use-package][use-package]] library:
 
 #+begin_src emacs-lisp
@@ -31,7 +32,7 @@ Now we'll enable John Wiegley's phenomenal [[https://github.com/jwiegley/use-pac
 ** General configuration
 *** No blinking.
     Seriously.
-    #+begin_src emacs_lisp
+    #+begin_src emacs-lisp
     (blink-cursor-mode 0)
     #+end_src
 *** Help and discoverability.
@@ -54,15 +55,49 @@ are available based on what you've already pressed.
 #+end_src
 
 *** Line numbers
-    I like having line numbers in the gutter.
+**** Modeline
+    #+begin_src emacs-lisp
+    ;; Add line/column numbers to modeline
+    (line-number-mode t)
+    (column-number-mode t)
+    #+end_src
 
-#+begin_src emacs-lisp
-;; Add line numbers to gutter
-(linum-mode)
-;; Add line/column numbers to modeline
-(line-number-mode t)
-(column-number-mode t)
-#+end_src
+**** Selectively enable linum-mode
+     =linum-mode= enables gutter line numbers. Disable it for specific modes.
+
+     From [[http://emacswiki.org/emacs/linum-off.el][emacswiki]]
+     #+begin_src emacs-lisp
+       (require 'linum)
+
+       (defcustom linum-disabled-modes-list '(eshell-mode
+                                              wl-summary-mode
+                                              compilation-mode
+                                              org-mode
+                                              text-mode
+                                              dired-mode
+                                              doc-view-mode
+                                              image-mode)
+         "* List of modes disabled when global linum mode is on"
+         :type '(repeat (sexp :tag "Major mode"))
+         :tag " Major modes where linum is disabled"
+         :group 'linum)
+
+       (defcustom linum-disable-starred-buffers 't
+         "* Disable buffers that have stars in them like *Gnu Emacs*"
+         :type 'boolean
+         :group 'linum)
+
+       (defun linum-on ()
+         "* When linum is running globally, disable line numbers in modes
+       defined in `linum-disabled-modes-list'. Changed by linum-off.
+       Also turns off numbering in starred modes like *scratch*."
+         (unless (or (minibufferp)
+                     (member major-mode linum-disabled-modes-list)
+                     (string-match "*" (buffer-name))
+                     (> (buffer-size) 3000000)) ;; Don't number huge files
+           (linum-mode 1)))
+       (provide 'linum-off)
+     #+end_src
 
 *** Change "yes or no" to "y or n"
     y is just fine, thank you.
@@ -85,6 +120,39 @@ are available based on what you've already pressed.
   (mcw/load-theme)
 #+end_src
 
+*** Helm
+    Helm is, in my opinion, the best minibuffer completion thing.
+    Let's stick it just about everywhere.
+
+    Also replace the standard =M-x= with =helm-M-x=
+
+    #+begin_src emacs-lisp
+    (use-package helm
+    :ensure t
+    :init
+    (progn
+      (require 'helm-config)
+      (global-set-key (kbd "M-x") 'helm-M-x)
+      (global-set-key (kbd "M-y") 'helm-show-kill-ring)
+      (helm-mode)))
+    #+end_src
+
+**** Disable ido-mode
+    Don't need ido-mode.  Disable it.
+
+    #+begin_src emacs-lisp
+    (ido-mode -1)
+    #+end_src
+
+**** helm-descbinds
+    helm-descbinds is pretty great.  =C-h b= brings up a helm-powered
+    list of available bindings in the current mode.
+    #+begin_src emacs-lisp
+    (use-package helm-descbinds
+    :ensure helm-descbinds
+    :config
+      (helm-descbinds-mode))
+    #+end_src
 *** Backups
 
 Turn on a whole mess of backup/save stuff. I'll probably cut
@@ -106,6 +174,25 @@ this out eventually.
 
   (setq gc-cons-threshold 200000000)
 #+end_src
+
+*** Modeline
+    The default modeline can get unwieldy, and go wider than the frame.
+
+    Add Bruce Connor's [[https://github.com/Bruce-Connor/smart-mode-line][smart-mode-line]] to make for a prettier and more
+    manageable modeline
+
+    #+begin_src emacs-lisp
+      (use-package smart-mode-line
+        :ensure smart-mode-line
+        :pre-init
+        :init
+        (progn
+          (use-package smart-mode-line-powerline-theme
+            :ensure smart-mode-line-powerline-theme))
+        :config
+        (progn
+          (sml/setup)))
+    #+end_src
 
 *** In which Michael cheats
 
