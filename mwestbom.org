@@ -6,28 +6,27 @@
 
 ** Package management
 *** Sources
-Let's begin by setting up the package system.  First we'll disable it,
-then make sure melpa, the de-facto package repo, is enabled.
+    Let's begin by setting up the package system.  First we'll disable it,
+    then make sure melpa, the de-facto package repo, is enabled.
 
-#+begin_src emacs-lisp
-  (setq package-enable-at-startup nil)
-  (unless (assoc-default "melpa" package-archives)
-    (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
-    (package-refresh-contents))
+    #+begin_src emacs-lisp
+      (setq package-enable-at-startup nil)
+      (unless (assoc-default "melpa" package-archives)
+        (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+        (package-refresh-contents))
 
-  (package-initialize)
-#+end_src
-
+      (package-initialize)
+    #+end_src
 *** use-package
-Now we'll enable John Wiegley's phenomenal [[https://github.com/jwiegley/use-package][use-package]] library:
+    Now we'll enable John Wiegley's phenomenal [[https://github.com/jwiegley/use-package][use-package]] library:
 
-#+begin_src emacs-lisp
-  (unless (package-installed-p 'use-package)
-    (package-refresh-contents)
-    (package-install 'use-package))
+    #+begin_src emacs-lisp
+      (unless (package-installed-p 'use-package)
+        (package-refresh-contents)
+        (package-install 'use-package))
 
-  (require 'use-package)
-#+end_src
+      (require 'use-package)
+    #+end_src
 
 ** General configuration
 *** Customize
