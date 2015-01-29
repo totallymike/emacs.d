@@ -49,6 +49,60 @@ are available based on what you've already pressed.
     (guide-key-mode 1)))
 #+end_src
 
+*** Let's throw in some default stuff.
+
+    Let's add a few basic settings:
+    - We just about always want line numbers.
+    - Also add line and column numbers to mode line
+    - Don't blink the cursor
+    - Don't make me type 'yes'.  'y' is fine for prompts.
+
+#+begin_src emacs-lisp
+  (linum-mode)
+  (line-number-mode t)
+  (column-number-mode t)
+  (size-indication-mode t)
+  (blink-cursor-mode 0)
+  (fset 'yes-or-no-p 'y-or-n-p)
+#+end_src
+
+*** Color scheme
+
+    Zenburn. Set it.  If it's not there, download it.
+
+#+begin_src emacs-lisp
+(defun mcw/load-theme ()
+  (if (package-installed-p 'zenburn-theme)
+      (load-theme 'zenburn)
+    (progn
+      (package-install 'zenburn-theme)
+      (mcw/load-theme))))
+
+(mcw/load-theme)
+#+end_src
+
+*** Backups
+
+Turn on a whole mess of backup/save stuff. I'll probably cut
+this out eventually.
+
+#+begin_src emacs-lisp
+  (setq
+   backup-by-copying t
+   backup-directory-alist '(("." . "~/.emacs.d/saves"))
+   delete-old-versions nil
+   version-control t)
+
+  (let
+      ((autosave-dir (expand-file-name "autosave" user-emacs-directory)))
+    (unless (file-exists-p autosave-dir)
+      (make-directory autosave-dir))
+    (setq auto-save-list-file-prefix (concat autosave-dir "/")
+          auto-save-file-name-transforms `((".*" ,autosave-dir t))))
+
+  (setq gc-cons-threshold 200000000)
+#+end_src
+
 *** In which Michael cheats
 
 As a cheat, for the moment we'll just load all the =.el= files I already have.
@@ -66,3 +120,4 @@ Later on I'll insert them into this .org file.
     (dolist (file (directory-files mcw-init-dir t "\\.el$"))
       (load file)))
 #+end_src
+
