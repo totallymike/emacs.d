@@ -261,6 +261,12 @@ Later on I'll insert them into this .org file.
 #+end_src
 
 ** Navigation
+*** The Silver Searcher
+    Enable integration with Ag.  This must happen before [[Projectile]]
+    #+BEGIN_SRC emacs-lisp
+      (use-package helm-ag
+        :ensure helm-ag)
+    #+END_SRC
 *** Windmove
      Windmove beats using =C-x o= to toggle through windows
 
@@ -321,6 +327,25 @@ Later on I'll insert them into this .org file.
 
       (bind-key "C-c b" 'mcw/switch-to-previous-buffer)
     #+end_src
+*** Projectile
+    [[https://github.com/bbatsov/projectile][Projectile]] is a fantastic tool.
+    #+BEGIN_SRC emacs-lisp
+      (use-package projectile
+        :ensure projectile
+        :diminish projectile-mode
+        :init
+        (progn
+          (setq projectile-keymap-prefix (kbd "C-c p"))
+          (projectile-global-mode)))
+    #+END_SRC
+
+    Also enable helm-projectile, which teaches projectile to use helm.
+    #+BEGIN_SRC emacs-lisp
+      (use-package helm-projectile
+        :ensure helm-projectile
+        :config
+        (helm-projectile-on))
+    #+END_SRC
 ** Org
 *** Speed keys
     #+BEGIN_SRC emacs-lisp
@@ -328,6 +353,41 @@ Later on I'll insert them into this .org file.
     #+END_SRC
 
 ** Programming
+*** Git
+    Emacs has so many fantastic get-related tools.
+**** Magit
+     Magit is 90% of why I moved over to it in the first place.
+     #+BEGIN_SRC emacs-lisp
+       (use-package magit
+         :commands magit-status
+         :load-path "site-lisp/magit"
+         :init (progn
+                 (use-package dash
+                   :ensure t)
+                 (bind-key "C-x g" 'magit-status)))
+     #+END_SRC
+
+**** Gist
+     Here's a handy tool for working with gists.  I don't use it very often, but I enjoy it when I do.
+     #+BEGIN_SRC emacs-lisp
+       (use-package gist
+         :ensure gist
+         :commands (gist-buffer gist-region gist-list))
+     #+END_SRC
+
+**** git-timemachine
+     Lets you flip back and forth through a file's VC history
+     #+BEGIN_SRC emacs-lisp
+       (use-package git-timemachine
+         :ensure git-timemachine)
+     #+END_SRC
+**** git-messenger
+     Shows most recent commit message for line under mark
+     #+BEGIN_SRC emacs-lisp
+       (use-package git-messenger
+         :ensure t
+         :bind (("C-x v p" . git-messenger:popup-message)))
+     #+END_SRC
 *** Rainbows!
 **** Rainbow identifiers
      Lots and lots of colors...
@@ -346,3 +406,17 @@ Later on I'll insert them into this .org file.
          :config (progn
                    (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)))
      #+END_SRC
+*** Various modes
+**** Markdown
+    Enable markdown mode
+    #+BEGIN_SRC emacs-lisp
+      (use-package markdown-mode
+        :ensure t
+        :mode ("\\.md\\'" . markdown-mode))
+    #+END_SRC
+**** Docker
+    #+BEGIN_SRC emacs-lisp
+      (use-package dockerfile-mode
+        :ensure t
+        :mode ("Dockerfile\\'" . dockerfile-mode))
+    #+END_SRC
