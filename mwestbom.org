@@ -38,6 +38,12 @@
             (expand-file-name "customizations.el" user-emacs-directory))
       (load custom-file)
     #+end_src
+*** Apple keyboards
+    Swap super and meta for macs.  This retains option being alt as in the rest of the OS.
+    #+BEGIN_SRC emacs-lisp
+      (setq mac-command-modifier 'super
+            mac-option-modifier 'meta)
+    #+END_SRC
 *** No blinking.
     Seriously.
     #+begin_src emacs-lisp
@@ -265,6 +271,38 @@ Later on I'll insert them into this .org file.
                   (windmove-default-keybindings 'meta)))
      #+end_src
 
+*** Beginning of line
+    Instead of =C-a= moving to column 0, go to first non-whitespace
+    character.  THEN go to column 0.  And back again.
+    #+BEGIN_SRC emacs-lisp
+      (defun smarter-move-beginning-of-line (arg)
+        "Move point back to indentation of beginning of line.
+
+      Move point to the first non-whitespace character on this line.
+      If point is already there, move to beginning of the line.
+      Effectively toggle between the first non-whitespace character and
+      the beginning of the line.
+
+      If ARG is not nil or 1, move forward ARG - 1 lines first.
+      If point reaches the beginning or end of the buffer, stop there."
+        (interactive "^p")
+        (setq arg (or arg 1))
+
+        ;; Move lines first
+        (when (/= arg 1)
+          (let ((line-move-visual nil))
+            (forward (1- arg))))
+
+        (let ((orig-point (point)))
+          (back-to-indentation)
+          (when (= orig-point (point))
+            (move-beginning-of-line 1))))
+
+      ;; remap C-a to `smarter-move-beginning-of-line`
+      (global-set-key [remap move-beginning-of-line]
+                      'smarter-move-beginning-of-line)
+
+    #+END_SRC
 *** Pop to mark
     Haven't built this into muscle memory yet.
     #+begin_src emacs-lisp
