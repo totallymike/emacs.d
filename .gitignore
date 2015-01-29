@@ -1,7 +1,10 @@
 autosave/
 elpa/
+eshell/
 saves/
 undo-tree.d/
+var/
+bookmarks
 mwestbom.el
 history
 helm-adaptive-history
