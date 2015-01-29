@@ -406,7 +406,44 @@ Later on I'll insert them into this .org file.
          :config (progn
                    (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)))
      #+END_SRC
-*** Various modes
+*** Autocomplete
+    Bring in company mode for autocomplete
+    #+BEGIN_SRC emacs-lisp
+      (use-package company
+        :ensure company
+        :diminish company-mode
+        :config
+        (add-hook 'prog-mode-hook 'company-mode))
+    #+END_SRC
+*** Flycheck
+    Enables support for linting in a bunch of different languages.
+    #+BEGIN_SRC emacs-lisp
+      (use-package flycheck
+        :ensure t
+        :init
+        (global-flycheck-mode))
+    #+END_SRC
+*** Smartparens
+    Enable automatic matching of paired syntax tokens.  This is brilliant.
+    #+BEGIN_SRC emacs-lisp
+      (use-package smartparens
+        :ensure smartparens
+        :config
+        (progn
+          (require 'smartparens-config)
+          (smartparens-global-mode 1)))
+    #+END_SRC
+*** Web mode
+    Web mode is pretty great about handling mixed-mode files like
+    HTML pages with javascript, or handlebars template pages.
+
+    Enable it for handlebars files.
+    #+BEGIN_SRC emacs-lisp
+      (use-package web-mode
+        :ensure t
+        :mode ("\\.hbs\\'" . web-mode))
+    #+END_SRC
+*** Various language modes
 **** Ruby
 ***** enh-ruby-mode
       Replace standard ruby mode with enh-ruby-mode.  I like its indentation engine better.
@@ -459,3 +496,39 @@ Later on I'll insert them into this .org file.
         :ensure t
         :mode ("Dockerfile\\'" . dockerfile-mode))
     #+END_SRC
+**** Javascript
+     js2-mode seems to have the best indentation/linting support.
+     #+BEGIN_SRC emacs-lisp
+       (use-package js2-mode
+         :commands js2-mode
+         :ensure t
+         :init
+         (progn
+           (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+           (add-to-list 'interpreter-mode-alist (cons "node" 'js2-mode))))
+     #+END_SRC
+**** Yaml
+     #+BEGIN_SRC emacs-lisp
+       (use-package yaml-mode
+         :ensure yaml-mode
+         :mode "\\.yml\\'")
+     #+END_SRC
+*** Terminals and shells
+**** Multi term
+     multi-term adds some useful features, like running multiple
+     terminal emulators, and a dedicated term buffer.
+     #+BEGIN_SRC emacs-lisp
+       (use-package multi-term
+         :ensure multi-term
+         :bind ("<f5>" . multi-term-dedicated-toggle))
+     #+END_SRC
+**** Clean up trailing whitespace stuff in terminals
+     #+BEGIN_SRC emacs-lisp
+       (add-hook 'term-mode-hook
+                 (lambda ()
+                   (setq show-trailing-whitespace nil)))
+
+       (add-hook 'eshell-mode-hook
+                 (lambda ()
+                   (setq show-trailing-whitespace nil)))
+     #+END_SRC
