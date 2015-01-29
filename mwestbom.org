@@ -194,6 +194,16 @@ this out eventually.
           (sml/setup)))
     #+end_src
 
+*** Undo Tree
+    Undo tree is fabulous
+    #+begin_src emacs-lisp
+      (use-package undo-tree
+        :ensure undo-tree
+        :diminish undo-tree-mode
+        :init
+        (progn
+          (global-undo-tree-mode)))
+    #+end_src
 *** Window management
 **** Window splitting
      Stole these from
