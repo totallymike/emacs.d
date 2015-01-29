@@ -68,6 +68,17 @@ are available based on what you've already pressed.
       (guide-key-mode 1)))
 #+end_src
 
+*** Whitespace
+**** Clean up trailing whitespace stuff in terminals
+     #+BEGIN_SRC emacs-lisp
+       (add-hook 'term-mode-hook
+                 (lambda ()
+                   (setq show-trailing-whitespace nil)))
+
+       (add-hook 'eshell-mode-hook
+                 (lambda ()
+                   (setq show-trailing-whitespace nil)))
+     #+END_SRC
 *** Line numbers
 **** Modeline
     #+begin_src emacs-lisp
@@ -499,7 +510,7 @@ this out eventually.
          :ensure yaml-mode
          :mode "\\.yml\\'")
      #+END_SRC
-*** Terminals and shells
+** Terminals and shells
 **** Multi term
      multi-term adds some useful features, like running multiple
      terminal emulators, and a dedicated term buffer.
@@ -508,13 +519,4 @@ this out eventually.
          :ensure multi-term
          :bind ("<f5>" . multi-term-dedicated-toggle))
      #+END_SRC
-**** Clean up trailing whitespace stuff in terminals
-     #+BEGIN_SRC emacs-lisp
-       (add-hook 'term-mode-hook
-                 (lambda ()
-                   (setq show-trailing-whitespace nil)))
 
-       (add-hook 'eshell-mode-hook
-                 (lambda ()
-                   (setq show-trailing-whitespace nil)))
-     #+END_SRC
