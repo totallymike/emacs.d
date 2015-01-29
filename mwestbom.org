@@ -304,6 +304,13 @@ this out eventually.
                       'smarter-move-beginning-of-line)
 
     #+END_SRC
+*** Visual expand
+    Experiment with keybindings for visual expand
+    #+BEGIN_SRC emacs-lisp
+      (use-package expand-region
+        :ensure expand-region
+        :bind ("C-=" . er/expand-region))
+    #+END_SRC
 *** Pop to mark
     Haven't built this into muscle memory yet.
     #+begin_src emacs-lisp
