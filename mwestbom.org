@@ -266,5 +266,4 @@ Later on I'll insert them into this .org file.
         (load file)))
 #+end_src
 
-**
 ** Programming
