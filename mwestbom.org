@@ -246,20 +246,6 @@ this out eventually.
          :ensure winner
          :init (winner-mode 1))
      #+end_src
-*** In which Michael cheats
-
-As a cheat, for the moment we'll just load all the =.el= files I already have.
-Later on I'll insert them into this .org file.
-
-#+begin_src emacs-lisp
-  (setq mcw-init-dir
-        (expand-file-name "init.d" user-emacs-directory))
-
-  (if (file-exists-p mcw-init-dir)
-      (dolist (file (directory-files mcw-init-dir t "\\.el$"))
-        (load file)))
-#+end_src
-
 ** Navigation
 *** The Silver Searcher
     Enable integration with Ag.  This must happen before [[Projectile]]
