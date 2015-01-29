@@ -285,4 +285,10 @@ Later on I'll insert them into this .org file.
 
       (bind-key "C-c b" 'mcw/switch-to-previous-buffer)
     #+end_src
+** Org
+*** Speed keys
+    #+BEGIN_SRC emacs-lisp
+      (setq org-use-speed-commands t)
+    #+END_SRC
+
 ** Programming
