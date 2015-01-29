@@ -4,10 +4,10 @@
 * Configuration
 <<babel-init>>
 
+** Initialization
+
 Let's begin by setting up the package system.  First we'll disable it,
 then make sure melpa, the de-facto package repo, is enabled.
-
-** Initialization
 
 #+begin_src emacs-lisp
 (setq package-enable-at-startup nil)
