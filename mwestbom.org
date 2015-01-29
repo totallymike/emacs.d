@@ -240,17 +240,6 @@ this out eventually.
          :ensure winner
          :init (winner-mode 1))
      #+end_src
-
-**** Windmove
-     Windmove beats using =C-x o= to toggle through windows
-
-     Let's switch the binding from =Super= to =Meta= though
-     #+begin_src emacs-lisp
-       (use-package windmove
-          :init (progn
-                  (windmove-default-keybindings 'meta)))
-     #+end_src
-
 *** In which Michael cheats
 
 As a cheat, for the moment we'll just load all the =.el= files I already have.
@@ -266,6 +255,16 @@ Later on I'll insert them into this .org file.
 #+end_src
 
 ** Navigation
+*** Windmove
+     Windmove beats using =C-x o= to toggle through windows
+
+     Let's switch the binding from =Super= to =Meta= though
+     #+begin_src emacs-lisp
+       (use-package windmove
+          :init (progn
+                  (windmove-default-keybindings 'meta)))
+     #+end_src
+
 *** Pop to mark
     Haven't built this into muscle memory yet.
     #+begin_src emacs-lisp
