@@ -30,6 +30,15 @@ Now we'll enable John Wiegley's phenomenal [[https://github.com/jwiegley/use-pac
 #+end_src
 
 ** General configuration
+*** Customize
+    Going to move away from customize eventually, but
+    until then, let's use the customizations I've got:
+
+    #+begin_src emacs-lisp
+      (setq custom-file
+            (expand-file-name "customizations.el" user-emacs-directory))
+      (load custom-file)
+    #+end_src
 *** No blinking.
     Seriously.
     #+begin_src emacs-lisp
@@ -251,10 +260,6 @@ Later on I'll insert them into this .org file.
 #+begin_src emacs-lisp
   (setq mcw-init-dir
         (expand-file-name "init.d" user-emacs-directory))
-
-  (setq custom-file
-        (expand-file-name "customizations.el" user-emacs-directory))
-  (load custom-file)
 
   (if (file-exists-p mcw-init-dir)
       (dolist (file (directory-files mcw-init-dir t "\\.el$"))
