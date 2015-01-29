@@ -194,6 +194,35 @@ this out eventually.
           (sml/setup)))
     #+end_src
 
+*** Window management
+**** Window splitting
+     Stole these from
+     [[http://pages.sachachua.com/.emacs.d/Sacha.html#unnumbered-28][Sacha Chua]]
+    #+begin_src emacs-lisp
+      (defun vsplit-last-buffer ()
+        (interactive)
+        (split-window-vertically)
+        (other-window 1 nil)
+        (switch-to-next-buffer))
+
+      (defun hsplit-last-buffer ()
+        (interactive)
+        (split-window-horizontally)
+        (other-window 1 nil)
+        (switch-to-next-buffer))
+
+      (use-package winner
+        :ensure winner
+        :init (winner-mode 1))
+
+      (global-set-key (kbd "C-x 2") 'vsplit-last-buffer)
+      (global-set-key (kbd "C-x 3") 'hsplit-last-buffer)
+
+      (use-package windmove
+        :init (progn
+                (windmove-default-keybindings 'meta)))
+
+    #+end_src
 *** In which Michael cheats
 
 As a cheat, for the moment we'll just load all the =.el= files I already have.
