@@ -211,18 +211,28 @@ this out eventually.
         (other-window 1 nil)
         (switch-to-next-buffer))
 
-      (use-package winner
-        :ensure winner
-        :init (winner-mode 1))
-
       (global-set-key (kbd "C-x 2") 'vsplit-last-buffer)
       (global-set-key (kbd "C-x 3") 'hsplit-last-buffer)
-
-      (use-package windmove
-        :init (progn
-                (windmove-default-keybindings 'meta)))
-
     #+end_src
+
+**** Winner mode
+     Winner mode adds an undo history to window configurations.
+     #+begin_src emacs-lisp
+       (use-package winner
+         :ensure winner
+         :init (winner-mode 1))
+     #+end_src
+
+**** Windmove
+     Windmove beats using =C-x o= to toggle through windows
+
+     Let's switch the binding from =Super= to =Meta= though
+     #+begin_src emacs-lisp
+       (use-package windmove
+          :init (progn
+                  (windmove-default-keybindings 'meta)))
+     #+end_src
+
 *** In which Michael cheats
 
 As a cheat, for the moment we'll just load all the =.el= files I already have.
