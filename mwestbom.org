@@ -10,22 +10,22 @@ Let's begin by setting up the package system.  First we'll disable it,
 then make sure melpa, the de-facto package repo, is enabled.
 
 #+begin_src emacs-lisp
-(setq package-enable-at-startup nil)
-(unless (assoc-default "melpa" package-archives)
-  (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
-  (package-refresh-contents))
+  (setq package-enable-at-startup nil)
+  (unless (assoc-default "melpa" package-archives)
+    (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+    (package-refresh-contents))
 
-(package-initialize)
+  (package-initialize)
 #+end_src
 
 Now we'll enable John Wiegley's phenomenal [[https://github.com/jwiegley/use-package][use-package]] library:
 
 #+begin_src emacs-lisp
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package))
 
-(require 'use-package)
+  (require 'use-package)
 #+end_src
 
 ** General configuration
@@ -36,17 +36,17 @@ Let's enable guide-key.  This tells you what possible bindings
 are available based on what you've already pressed.
 
 #+begin_src emacs-lisp
-(use-package guide-key-tip
-  :ensure t
-  :init
-  (progn
-    (setq guide-key/guide-key-sequence `("C-x"
-                                         "C-c"
-                                         "C-h")
-          guide-key/recursive-key-sequence-flag t
-          guide-key/text-scale-amount 0
-          guide-key-tip/enabled nil)
-    (guide-key-mode 1)))
+  (use-package guide-key-tip
+    :ensure t
+    :init
+    (progn
+      (setq guide-key/guide-key-sequence `("C-x"
+                                           "C-c"
+                                           "C-h")
+            guide-key/recursive-key-sequence-flag t
+            guide-key/text-scale-amount 0
+            guide-key-tip/enabled nil)
+      (guide-key-mode 1)))
 #+end_src
 
 *** Let's throw in some default stuff.
@@ -71,14 +71,14 @@ are available based on what you've already pressed.
     Zenburn. Set it.  If it's not there, download it.
 
 #+begin_src emacs-lisp
-(defun mcw/load-theme ()
-  (if (package-installed-p 'zenburn-theme)
-      (load-theme 'zenburn)
-    (progn
-      (package-install 'zenburn-theme)
-      (mcw/load-theme))))
+  (defun mcw/load-theme ()
+    (if (package-installed-p 'zenburn-theme)
+        (load-theme 'zenburn)
+      (progn
+        (package-install 'zenburn-theme)
+        (mcw/load-theme))))
 
-(mcw/load-theme)
+  (mcw/load-theme)
 #+end_src
 
 *** Backups
@@ -109,15 +109,15 @@ As a cheat, for the moment we'll just load all the =.el= files I already have.
 Later on I'll insert them into this .org file.
 
 #+begin_src emacs-lisp
-(setq mcw-init-dir
-      (expand-file-name "init.d" user-emacs-directory))
+  (setq mcw-init-dir
+        (expand-file-name "init.d" user-emacs-directory))
 
-(setq custom-file
-      (expand-file-name "customizations.el" user-emacs-directory))
-(load custom-file)
+  (setq custom-file
+        (expand-file-name "customizations.el" user-emacs-directory))
+  (load custom-file)
 
-(if (file-exists-p mcw-init-dir)
-    (dolist (file (directory-files mcw-init-dir t "\\.el$"))
-      (load file)))
+  (if (file-exists-p mcw-init-dir)
+      (dolist (file (directory-files mcw-init-dir t "\\.el$"))
+        (load file)))
 #+end_src
 
