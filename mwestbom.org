@@ -266,4 +266,23 @@ Later on I'll insert them into this .org file.
         (load file)))
 #+end_src
 
+** Navigation
+*** Pop to mark
+    Haven't built this into muscle memory yet.
+    #+begin_src emacs-lisp
+      (bind-key "C-x p" 'pop-to-mark-command)
+      (setq set-mark-command-repeat-pop t)
+    #+end_src
+
+*** Switch to previous buffer
+    Switch to last buffer. Absolutely essential.
+    #+begin_src emacs-lisp
+      (defun mcw/switch-to-previous-buffer ()
+        "Switch to previously open buffer.
+      Repeated invocations toggle between the most recently open buffers."
+        (interactive)
+        (switch-to-buffer (other-buffer (current-buffer) 1)))
+
+      (bind-key "C-c b" 'mcw/switch-to-previous-buffer)
+    #+end_src
 ** Programming
