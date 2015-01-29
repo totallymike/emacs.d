@@ -328,3 +328,21 @@ Later on I'll insert them into this .org file.
     #+END_SRC
 
 ** Programming
+*** Rainbows!
+**** Rainbow identifiers
+     Lots and lots of colors...
+     #+BEGIN_SRC emacs-lisp
+       (use-package rainbow-identifiers
+         :ensure rainbow-identifiers
+         :config (progn
+                   (add-hook 'prog-mode-hook 'rainbow-identifiers-mode)))
+     #+END_SRC
+
+**** Rainbow Delimiters
+     Individually color delimiters, to differentiate levels of nesting.
+     #+BEGIN_SRC emacs-lisp
+       (use-package rainbow-delimiters
+         :ensure rainbow-delimiters
+         :config (progn
+                   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)))
+     #+END_SRC
