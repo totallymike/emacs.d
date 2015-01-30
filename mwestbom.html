@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Michael Westbom's Emacs configuration</title>
+<!-- 2015-01-29 Thu 22:32 -->
+<meta  charset="utf-8">
+<meta  name="generator" content="Org-mode">
+<meta  name="author" content="Michael Westbom">
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<link href="http://cdn.foundation5.zurb.com/foundation.css" rel="stylesheet">
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Michael Westbom's Emacs configuration</h1>
+<nav id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#unnumbered-1">Configuration</a>
+<ul>
+<li><a href="#unnumbered-2">About this file</a></li>
+<li><a href="#unnumbered-3">Package management</a>
+<ul>
+<li><a href="#unnumbered-4">Sources</a></li>
+<li><a href="#unnumbered-5">use-package</a></li>
+</ul>
+</li>
+<li><a href="#unnumbered-6">General configuration</a>
+<ul>
+<li><a href="#unnumbered-7">Customize</a></li>
+<li><a href="#unnumbered-8">Apple keyboards</a></li>
+<li><a href="#unnumbered-9">No blinking.</a></li>
+<li><a href="#unnumbered-10">Help and discoverability.</a></li>
+<li><a href="#unnumbered-11">Whitespace</a>
+<ul>
+<li><a href="#unnumbered-12">Clean up trailing whitespace stuff in terminals</a></li>
+</ul>
+</li>
+<li><a href="#unnumbered-13">Line numbers</a>
+<ul>
+<li><a href="#unnumbered-14">Modeline</a></li>
+<li><a href="#unnumbered-15">Selectively enable linum-mode</a></li>
+</ul>
+</li>
+<li><a href="#unnumbered-16">Change "yes or no" to "y or n"</a></li>
+<li><a href="#unnumbered-17">Color scheme</a></li>
+<li><a href="#unnumbered-18">Helm</a>
+<ul>
+<li><a href="#unnumbered-19">Disable ido-mode</a></li>
+<li><a href="#unnumbered-20">helm-descbinds</a></li>
+</ul>
+</li>
+<li><a href="#unnumbered-21">Backups</a></li>
+<li><a href="#unnumbered-22">Modeline</a></li>
+<li><a href="#unnumbered-23">Undo Tree</a></li>
+<li><a href="#unnumbered-24">Window management</a>
+<ul>
+<li><a href="#unnumbered-25">Window splitting</a></li>
+<li><a href="#unnumbered-26">Winner mode</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#unnumbered-27">Navigation</a>
+<ul>
+<li><a href="#unnumbered-28">The Silver Searcher</a></li>
+<li><a href="#unnumbered-29">Windmove</a></li>
+<li><a href="#unnumbered-30">Beginning of line</a></li>
+<li><a href="#unnumbered-31">Visual expand</a></li>
+<li><a href="#unnumbered-32">Pop to mark</a></li>
+<li><a href="#unnumbered-33">Switch to previous buffer</a></li>
+<li><a href="#unnumbered-34">Projectile</a></li>
+</ul>
+</li>
+<li><a href="#unnumbered-35">Org</a>
+<ul>
+<li><a href="#unnumbered-36">Speed keys</a></li>
+<li><a href="#unnumbered-37">Publishing</a>
+<ul>
+<li><a href="#unnumbered-38">Section numbers</a></li>
+<li><a href="#unnumbered-39">Stylesheets</a></li>
+<li><a href="#unnumbered-40">Publish config file</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#unnumbered-41">Programming</a>
+<ul>
+<li><a href="#unnumbered-42">Git</a>
+<ul>
+<li><a href="#unnumbered-43">Magit</a></li>
+<li><a href="#unnumbered-44">Gist</a></li>
+<li><a href="#unnumbered-45">git-timemachine</a></li>
+<li><a href="#unnumbered-46">git-messenger</a></li>
+</ul>
+</li>
+<li><a href="#unnumbered-47">Rainbows!</a>
+<ul>
+<li><a href="#unnumbered-48">Rainbow identifiers</a></li>
+<li><a href="#unnumbered-49">Rainbow Delimiters</a></li>
+</ul>
+</li>
+<li><a href="#unnumbered-50">Autocomplete</a></li>
+<li><a href="#unnumbered-51">Flycheck</a></li>
+<li><a href="#unnumbered-52">Smartparens</a></li>
+<li><a href="#unnumbered-53">Web mode</a></li>
+<li><a href="#unnumbered-54">Various language modes</a>
+<ul>
+<li><a href="#unnumbered-55">Ruby</a></li>
+<li><a href="#unnumbered-59">Markdown</a></li>
+<li><a href="#unnumbered-60">Docker</a></li>
+<li><a href="#unnumbered-61">Javascript</a></li>
+<li><a href="#unnumbered-62">Yaml</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#unnumbered-63">Terminals and shells</a>
+<ul>
+<li>
+<ul>
+<li><a href="#unnumbered-64">Multi term</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</nav>
+
+<div id="outline-container-unnumbered-1" class="outline-2">
+<h2 id="unnumbered-1">Configuration</h2>
+<div class="outline-text-2" id="text-unnumbered-1">
+</div><div id="outline-container-unnumbered-2" class="outline-3">
+<h3 id="unnumbered-2">About this file</h3>
+<div class="outline-text-3" id="text-unnumbered-2">
+<p>
+This is my configuration file.  It can be loaded by Emacs via org-babel.
+The contents of my <code>~/.emacs/init.el</code> simplify to this, which loads it:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-rainbow-identifiers-identifier-11">add-hook</span> '<span class="org-rainbow-identifiers-identifier-3">after-init-hook</span>
+          <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">lambda</span> <span class="org-rainbow-delimiters-depth-3">()</span>
+            <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-identifiers-identifier-4">org-babel-load-file</span>
+             <span class="org-rainbow-delimiters-depth-4">(</span><span class="org-rainbow-identifiers-identifier-15">expand-file-name</span> <span class="org-string">"mwestbom.org"</span> <span class="org-rainbow-identifiers-identifier-14">user-emacs-directory</span><span class="org-rainbow-delimiters-depth-4">)</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+<p>
+One can evaluate individual blocks of this file by putting <code>(point)</code> on them
+and calling <code>org-edit-special</code>, which is bound by default to =C-c \'=
+</p>
+
+<p>
+Then <code>M-x eval-buffer</code> to evaluate them.
+</p>
+</div>
+</div>
+<div id="outline-container-unnumbered-3" class="outline-3">
+<h3 id="unnumbered-3">Package management</h3>
+<div class="outline-text-3" id="text-unnumbered-3">
+</div><div id="outline-container-unnumbered-4" class="outline-4">
+<h4 id="unnumbered-4">Sources</h4>
+</div>
+<div id="outline-container-unnumbered-5" class="outline-4">
+<h4 id="unnumbered-5">use-package</h4>
+<div class="outline-text-4" id="text-unnumbered-5">
+<p>
+Now we'll enable John Wiegley's phenomenal <a href="https://github.com/jwiegley/use-package">use-package</a> library:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">unless</span> <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-rainbow-identifiers-identifier-5">package-installed-p</span> '<span class="org-rainbow-identifiers-identifier-4">use-package</span><span class="org-rainbow-delimiters-depth-2">)</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-rainbow-identifiers-identifier-11">package-refresh-contents</span><span class="org-rainbow-delimiters-depth-2">)</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-rainbow-identifiers-identifier-4">package-install</span> '<span class="org-rainbow-identifiers-identifier-4">use-package</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+
+<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">require</span> '<span class="org-constant">use-package</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-unnumbered-6" class="outline-3">
+<h3 id="unnumbered-6">General configuration</h3>
+<div class="outline-text-3" id="text-unnumbered-6">
+</div><div id="outline-container-unnumbered-7" class="outline-4">
+<h4 id="unnumbered-7">Customize</h4>
+<div class="outline-text-4" id="text-unnumbered-7">
+<p>
+Going to move away from customize eventually, but
+until then, let's use the customizations I've got:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-rainbow-identifiers-identifier-12">setq</span> <span class="org-rainbow-identifiers-identifier-15">custom-file</span>
+      <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-rainbow-identifiers-identifier-15">expand-file-name</span> <span class="org-string">"customizations.el"</span> <span class="org-rainbow-identifiers-identifier-14">user-emacs-directory</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-rainbow-identifiers-identifier-10">load</span> <span class="org-rainbow-identifiers-identifier-15">custom-file</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-unnumbered-8" class="outline-4">
+<h4 id="unnumbered-8">Apple keyboards</h4>
+<div class="outline-text-4" id="text-unnumbered-8">
+<p>
+Swap super and meta for macs.  This retains option being alt as in the rest of the OS.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-rainbow-identifiers-identifier-12">setq</span> <span class="org-rainbow-identifiers-identifier-7">mac-command-modifier</span> '<span class="org-rainbow-identifiers-identifier-11">super</span>
+      <span class="org-rainbow-identifiers-identifier-13">mac-option-modifier</span> '<span class="org-rainbow-identifiers-identifier-11">meta</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-unnumbered-9" class="outline-4">
+<h4 id="unnumbered-9">No blinking.</h4>
+<div class="outline-text-4" id="text-unnumbered-9">
+<p>
+Seriously.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-rainbow-identifiers-identifier-9">blink-cursor-mode</span> <span class="org-rainbow-identifiers-identifier-12">0</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-unnumbered-10" class="outline-4">
+<h4 id="unnumbered-10">Help and discoverability.</h4>
+<div class="outline-text-4" id="text-unnumbered-10">
+<p>
+Let's enable guide-key.  This tells you what possible bindings
+are available based on what you've already pressed.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">guide-key-tip</span>
+  <span class="org-builtin">:ensure</span> <span class="org-rainbow-identifiers-identifier-8">t</span>
+  <span class="org-builtin">:init</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">progn</span>
+    <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-identifiers-identifier-12">setq</span> <span class="org-rainbow-identifiers-identifier-8">guide-key/guide-key-sequence</span> `<span class="org-rainbow-delimiters-depth-4">(</span><span class="org-string">"C-x"</span>
+                                         <span class="org-string">"C-c"</span>
+                                         <span class="org-string">"C-h"</span><span class="org-rainbow-delimiters-depth-4">)</span>
+          <span class="org-rainbow-identifiers-identifier-2">guide-key/recursive-key-sequence-flag</span> <span class="org-rainbow-identifiers-identifier-8">t</span>
+          <span class="org-rainbow-identifiers-identifier-9">guide-key/text-scale-amount</span> <span class="org-rainbow-identifiers-identifier-12">0</span>
+          <span class="org-rainbow-identifiers-identifier-8">guide-key-tip/enabled</span> <span class="org-rainbow-identifiers-identifier-2">nil</span><span class="org-rainbow-delimiters-depth-3">)</span>
+    <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-identifiers-identifier-4">guide-key-mode</span> <span class="org-rainbow-identifiers-identifier-1">1</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-unnumbered-11" class="outline-4">
+<h4 id="unnumbered-11">Whitespace</h4>
+<div class="outline-text-4" id="text-unnumbered-11">
+</div><div id="outline-container-unnumbered-12" class="outline-5">
+<h5 id="unnumbered-12">Clean up trailing whitespace stuff in terminals</h5>
+<div class="outline-text-5" id="text-unnumbered-12">
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-rainbow-identifiers-identifier-11">add-hook</span> '<span class="org-rainbow-identifiers-identifier-8">term-mode-hook</span>
+          <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">lambda</span> <span class="org-rainbow-delimiters-depth-3">()</span>
+            <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-identifiers-identifier-12">setq</span> <span class="org-rainbow-identifiers-identifier-1">show-trailing-whitespace</span> <span class="org-rainbow-identifiers-identifier-2">nil</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+
+<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-rainbow-identifiers-identifier-11">add-hook</span> '<span class="org-rainbow-identifiers-identifier-6">eshell-mode-hook</span>
+          <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">lambda</span> <span class="org-rainbow-delimiters-depth-3">()</span>
+            <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-identifiers-identifier-12">setq</span> <span class="org-rainbow-identifiers-identifier-1">show-trailing-whitespace</span> <span class="org-rainbow-identifiers-identifier-2">nil</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-unnumbered-13" class="outline-4">
+<h4 id="unnumbered-13">Line numbers</h4>
+<div class="outline-text-4" id="text-unnumbered-13">
+</div><div id="outline-container-unnumbered-14" class="outline-5">
+<h5 id="unnumbered-14">Modeline</h5>
+<div class="outline-text-5" id="text-unnumbered-14">
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-comment-delimiter">;; </span><span class="org-comment">Add line/column numbers to modeline</span>
+<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-rainbow-identifiers-identifier-14">line-number-mode</span> <span class="org-rainbow-identifiers-identifier-8">t</span><span class="org-rainbow-delimiters-depth-1">)</span>
+<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-rainbow-identifiers-identifier-13">column-number-mode</span> <span class="org-rainbow-identifiers-identifier-8">t</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-unnumbered-15" class="outline-5">
+<h5 id="unnumbered-15">Selectively enable linum-mode</h5>
+<div class="outline-text-5" id="text-unnumbered-15">
+<p>
+<code>linum-mode</code> enables gutter line numbers. Disable it for specific modes.
+</p>
+
+<p>
+From <a href="http://emacswiki.org/emacs/linum-off.el">emacswiki</a>
+</p>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">require</span> '<span class="org-constant">linum</span><span class="org-rainbow-delimiters-depth-1">)</span>
+
+<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">defcustom</span> <span class="org-variable-name">linum-disabled-modes-list</span> '<span class="org-rainbow-delimiters-depth-2">(</span><span class="org-rainbow-identifiers-identifier-12">eshell-mode</span>
+                                       <span class="org-rainbow-identifiers-identifier-10">wl-summary-mode</span>
+                                       <span class="org-rainbow-identifiers-identifier-11">compilation-mode</span>
+                                       <span class="org-rainbow-identifiers-identifier-4">org-mode</span>
+                                       <span class="org-rainbow-identifiers-identifier-14">text-mode</span>
+                                       <span class="org-rainbow-identifiers-identifier-11">dired-mode</span>
+                                       <span class="org-rainbow-identifiers-identifier-15">doc-view-mode</span>
+                                       <span class="org-rainbow-identifiers-identifier-6">image-mode</span><span class="org-rainbow-delimiters-depth-2">)</span>
+  <span class="org-doc">"* List of modes disabled when global linum mode is on"</span>
+  <span class="org-builtin">:type</span> '<span class="org-rainbow-delimiters-depth-2">(</span><span class="org-rainbow-identifiers-identifier-2">repeat</span> <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-identifiers-identifier-8">sexp</span> <span class="org-builtin">:tag</span> <span class="org-string">"Major mode"</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span>
+  <span class="org-builtin">:tag</span> <span class="org-string">" Major modes where linum is disabled"</span>
+  <span class="org-builtin">:group</span> '<span class="org-rainbow-identifiers-identifier-2">linum</span><span class="org-rainbow-delimiters-depth-1">)</span>
+
+<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">defcustom</span> <span class="org-variable-name">linum-disable-starred-buffers</span> '<span class="org-rainbow-identifiers-identifier-8">t</span>
+  <span class="org-doc">"* Disable buffers that have stars in them like *Gnu Emacs*"</span>
+  <span class="org-builtin">:type</span> '<span class="org-rainbow-identifiers-identifier-2">boolean</span>
+  <span class="org-builtin">:group</span> '<span class="org-rainbow-identifiers-identifier-2">linum</span><span class="org-rainbow-delimiters-depth-1">)</span>
+
+<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">defun</span> <span class="org-function-name">linum-on</span> <span class="org-rainbow-delimiters-depth-2">()</span>
+  <span class="org-doc">"* When linum is running globally, disable line numbers in modes</span>
+<span class="org-doc">defined in `</span><span class="org-doc"><span class="org-constant">linum-disabled-modes-list</span></span><span class="org-doc">'. Changed by linum-off.</span>
+<span class="org-doc">Also turns off numbering in starred modes like *scratch*."</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">unless</span> <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-identifiers-identifier-12">or</span> <span class="org-rainbow-delimiters-depth-4">(</span><span class="org-rainbow-identifiers-identifier-1">minibufferp</span><span class="org-rainbow-delimiters-depth-4">)</span>
+              <span class="org-rainbow-delimiters-depth-4">(</span><span class="org-rainbow-identifiers-identifier-4">member</span> <span class="org-rainbow-identifiers-identifier-2">major-mode</span> <span class="org-rainbow-identifiers-identifier-15">linum-disabled-modes-list</span><span class="org-rainbow-delimiters-depth-4">)</span>
+              <span class="org-rainbow-delimiters-depth-4">(</span><span class="org-rainbow-identifiers-identifier-6">string-match</span> <span class="org-string">"*"</span> <span class="org-rainbow-delimiters-depth-5">(</span><span class="org-rainbow-identifiers-identifier-9">buffer-name</span><span class="org-rainbow-delimiters-depth-5">)</span><span class="org-rainbow-delimiters-depth-4">)</span>
+              <span class="org-rainbow-delimiters-depth-4">(</span><span class="org-rainbow-identifiers-identifier-6">&gt;</span> <span class="org-rainbow-delimiters-depth-5">(</span><span class="org-rainbow-identifiers-identifier-8">buffer-size</span><span class="org-rainbow-delimiters-depth-5">)</span> <span class="org-rainbow-identifiers-identifier-13">3000000</span><span class="org-rainbow-delimiters-depth-4">)</span><span class="org-rainbow-delimiters-depth-3">)</span> <span class="org-comment-delimiter">;; </span><span class="org-comment">Don't number huge files</span>
+    <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-identifiers-identifier-13">linum-mode</span> <span class="org-rainbow-identifiers-identifier-1">1</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">provide</span> '<span class="org-constant">linum-off</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-unnumbered-16" class="outline-4">
+<h4 id="unnumbered-16">Change "yes or no" to "y or n"</h4>
+<div class="outline-text-4" id="text-unnumbered-16">
+<p>
+y is just fine, thank you.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-rainbow-identifiers-identifier-5">fset</span> '<span class="org-rainbow-identifiers-identifier-4">yes-or-no-p</span> '<span class="org-rainbow-identifiers-identifier-10">y-or-n-p</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-unnumbered-17" class="outline-4">
+<h4 id="unnumbered-17">Color scheme</h4>
+<div class="outline-text-4" id="text-unnumbered-17">
+<p>
+Zenburn. Set it.  If it's not there, download it.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">defun</span> <span class="org-function-name">mcw/load-theme</span> <span class="org-rainbow-delimiters-depth-2">()</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">if</span> <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-identifiers-identifier-5">package-installed-p</span> '<span class="org-rainbow-identifiers-identifier-6">zenburn-theme</span><span class="org-rainbow-delimiters-depth-3">)</span>
+      <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-identifiers-identifier-14">load-theme</span> '<span class="org-rainbow-identifiers-identifier-5">zenburn</span><span class="org-rainbow-delimiters-depth-3">)</span>
+    <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-keyword">progn</span>
+      <span class="org-rainbow-delimiters-depth-4">(</span><span class="org-rainbow-identifiers-identifier-4">package-install</span> '<span class="org-rainbow-identifiers-identifier-6">zenburn-theme</span><span class="org-rainbow-delimiters-depth-4">)</span>
+      <span class="org-rainbow-delimiters-depth-4">(</span><span class="org-rainbow-identifiers-identifier-8">mcw/load-theme</span><span class="org-rainbow-delimiters-depth-4">)</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+
+<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-rainbow-identifiers-identifier-8">mcw/load-theme</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-unnumbered-18" class="outline-4">
+<h4 id="unnumbered-18">Helm</h4>
+<div class="outline-text-4" id="text-unnumbered-18">
+<p>
+Helm is, in my opinion, the best minibuffer completion thing.
+Let's stick it just about everywhere.
+</p>
+
+<p>
+Also replace the standard <code>M-x</code> with <code>helm-M-x</code>
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">helm</span>
+<span class="org-builtin">:ensure</span> <span class="org-rainbow-identifiers-identifier-8">t</span>
+<span class="org-builtin">:init</span>
+<span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">progn</span>
+  <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-keyword">require</span> '<span class="org-constant">helm-config</span><span class="org-rainbow-delimiters-depth-3">)</span>
+  <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-identifiers-identifier-15">global-set-key</span> <span class="org-rainbow-delimiters-depth-4">(</span><span class="org-rainbow-identifiers-identifier-5">kbd</span> <span class="org-string">"M-x"</span><span class="org-rainbow-delimiters-depth-4">)</span> '<span class="org-rainbow-identifiers-identifier-9">helm-M-x</span><span class="org-rainbow-delimiters-depth-3">)</span>
+  <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-identifiers-identifier-15">global-set-key</span> <span class="org-rainbow-delimiters-depth-4">(</span><span class="org-rainbow-identifiers-identifier-5">kbd</span> <span class="org-string">"M-y"</span><span class="org-rainbow-delimiters-depth-4">)</span> '<span class="org-rainbow-identifiers-identifier-8">helm-show-kill-ring</span><span class="org-rainbow-delimiters-depth-3">)</span>
+  <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-identifiers-identifier-8">helm-mode</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+
+<div id="outline-container-unnumbered-19" class="outline-5">
+<h5 id="unnumbered-19">Disable ido-mode</h5>
+<div class="outline-text-5" id="text-unnumbered-19">
+<p>
+Don't need ido-mode.  Disable it.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-rainbow-identifiers-identifier-7">ido-mode</span> <span class="org-rainbow-identifiers-identifier-14">-1</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-unnumbered-20" class="outline-5">
+<h5 id="unnumbered-20">helm-descbinds</h5>
+<div class="outline-text-5" id="text-unnumbered-20">
+<p>
+helm-descbinds is pretty great.  <code>C-h b</code> brings up a helm-powered
+list of available bindings in the current mode.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">helm-descbinds</span>
+<span class="org-builtin">:ensure</span> <span class="org-rainbow-identifiers-identifier-13">helm-descbinds</span>
+<span class="org-builtin">:config</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-rainbow-identifiers-identifier-5">helm-descbinds-mode</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-unnumbered-21" class="outline-4">
+<h4 id="unnumbered-21">Backups</h4>
+<div class="outline-text-4" id="text-unnumbered-21">
+<p>
+Turn on a whole mess of backup/save stuff. I'll probably cut
+this out eventually.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-rainbow-identifiers-identifier-12">setq</span>
+ <span class="org-rainbow-identifiers-identifier-8">backup-by-copying</span> <span class="org-rainbow-identifiers-identifier-8">t</span>
+ <span class="org-rainbow-identifiers-identifier-9">backup-directory-alist</span> '<span class="org-rainbow-delimiters-depth-2">(</span><span class="org-rainbow-delimiters-depth-3">(</span><span class="org-string">"."</span> <span class="org-rainbow-identifiers-identifier-15">.</span> <span class="org-string">"~/.emacs.d/saves"</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span>
+ <span class="org-rainbow-identifiers-identifier-3">delete-old-versions</span> <span class="org-rainbow-identifiers-identifier-14">-1</span>
+ <span class="org-rainbow-identifiers-identifier-10">version-control</span> <span class="org-rainbow-identifiers-identifier-8">t</span><span class="org-rainbow-delimiters-depth-1">)</span>
+
+<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">let</span>
+    <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-identifiers-identifier-15">autosave-dir</span> <span class="org-rainbow-delimiters-depth-4">(</span><span class="org-rainbow-identifiers-identifier-15">expand-file-name</span> <span class="org-string">"autosave"</span> <span class="org-rainbow-identifiers-identifier-14">user-emacs-directory</span><span class="org-rainbow-delimiters-depth-4">)</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">unless</span> <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-identifiers-identifier-12">file-exists-p</span> <span class="org-rainbow-identifiers-identifier-15">autosave-dir</span><span class="org-rainbow-delimiters-depth-3">)</span>
+    <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-identifiers-identifier-13">make-directory</span> <span class="org-rainbow-identifiers-identifier-15">autosave-dir</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-rainbow-identifiers-identifier-12">setq</span> <span class="org-rainbow-identifiers-identifier-12">auto-save-list-file-prefix</span> <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-identifiers-identifier-13">concat</span> <span class="org-rainbow-identifiers-identifier-15">autosave-dir</span> <span class="org-string">"/"</span><span class="org-rainbow-delimiters-depth-3">)</span>
+        <span class="org-rainbow-identifiers-identifier-2">auto-save-file-name-transforms</span> `<span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-delimiters-depth-4">(</span><span class="org-string">".*"</span> ,<span class="org-rainbow-identifiers-identifier-15">autosave-dir</span> <span class="org-rainbow-identifiers-identifier-8">t</span><span class="org-rainbow-delimiters-depth-4">)</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+
+<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-rainbow-identifiers-identifier-12">setq</span> <span class="org-rainbow-identifiers-identifier-6">gc-cons-threshold</span> <span class="org-rainbow-identifiers-identifier-1">200000000</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-unnumbered-22" class="outline-4">
+<h4 id="unnumbered-22">Modeline</h4>
+<div class="outline-text-4" id="text-unnumbered-22">
+<p>
+The default modeline can get unwieldy, and go wider than the frame.
+</p>
+
+<p>
+Add Bruce Connor's <a href="https://github.com/Bruce-Connor/smart-mode-line">smart-mode-line</a> to make for a prettier and more
+manageable modeline
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">smart-mode-line</span>
+  <span class="org-builtin">:ensure</span> <span class="org-rainbow-identifiers-identifier-4">smart-mode-line</span>
+  <span class="org-builtin">:pre-init</span>
+  <span class="org-builtin">:init</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">progn</span>
+    <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-keyword">use-package</span> <span class="org-constant">smart-mode-line-powerline-theme</span>
+      <span class="org-builtin">:ensure</span> <span class="org-rainbow-identifiers-identifier-10">smart-mode-line-powerline-theme</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span>
+  <span class="org-builtin">:config</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">progn</span>
+    <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-identifiers-identifier-7">sml/setup</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-unnumbered-23" class="outline-4">
+<h4 id="unnumbered-23">Undo Tree</h4>
+<div class="outline-text-4" id="text-unnumbered-23">
+<p>
+Undo tree is fabulous
+</p>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">undo-tree</span>
+  <span class="org-builtin">:ensure</span> <span class="org-rainbow-identifiers-identifier-15">undo-tree</span>
+  <span class="org-builtin">:diminish</span> <span class="org-rainbow-identifiers-identifier-1">undo-tree-mode</span>
+  <span class="org-builtin">:init</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">progn</span>
+    <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-identifiers-identifier-10">global-undo-tree-mode</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-unnumbered-24" class="outline-4">
+<h4 id="unnumbered-24">Window management</h4>
+<div class="outline-text-4" id="text-unnumbered-24">
+</div><div id="outline-container-unnumbered-25" class="outline-5">
+<h5 id="unnumbered-25">Window splitting</h5>
+<div class="outline-text-5" id="text-unnumbered-25">
+<p>
+Stole these from
+<a href="http://pages.sachachua.com/.emacs.d/Sacha.html#unnumbered-28">Sacha Chua</a>
+</p>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">defun</span> <span class="org-function-name">vsplit-last-buffer</span> <span class="org-rainbow-delimiters-depth-2">()</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-rainbow-identifiers-identifier-1">interactive</span><span class="org-rainbow-delimiters-depth-2">)</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-rainbow-identifiers-identifier-6">split-window-vertically</span><span class="org-rainbow-delimiters-depth-2">)</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-rainbow-identifiers-identifier-2">other-window</span> <span class="org-rainbow-identifiers-identifier-1">1</span> <span class="org-rainbow-identifiers-identifier-2">nil</span><span class="org-rainbow-delimiters-depth-2">)</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-rainbow-identifiers-identifier-14">switch-to-next-buffer</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+
+<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">defun</span> <span class="org-function-name">hsplit-last-buffer</span> <span class="org-rainbow-delimiters-depth-2">()</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-rainbow-identifiers-identifier-1">interactive</span><span class="org-rainbow-delimiters-depth-2">)</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-rainbow-identifiers-identifier-12">split-window-horizontally</span><span class="org-rainbow-delimiters-depth-2">)</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-rainbow-identifiers-identifier-2">other-window</span> <span class="org-rainbow-identifiers-identifier-1">1</span> <span class="org-rainbow-identifiers-identifier-2">nil</span><span class="org-rainbow-delimiters-depth-2">)</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-rainbow-identifiers-identifier-14">switch-to-next-buffer</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+
+<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-rainbow-identifiers-identifier-15">global-set-key</span> <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-rainbow-identifiers-identifier-5">kbd</span> <span class="org-string">"C-x 2"</span><span class="org-rainbow-delimiters-depth-2">)</span> '<span class="org-rainbow-identifiers-identifier-14">vsplit-last-buffer</span><span class="org-rainbow-delimiters-depth-1">)</span>
+<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-rainbow-identifiers-identifier-15">global-set-key</span> <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-rainbow-identifiers-identifier-5">kbd</span> <span class="org-string">"C-x 3"</span><span class="org-rainbow-delimiters-depth-2">)</span> '<span class="org-rainbow-identifiers-identifier-9">hsplit-last-buffer</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-unnumbered-26" class="outline-5">
+<h5 id="unnumbered-26">Winner mode</h5>
+<div class="outline-text-5" id="text-unnumbered-26">
+<p>
+Winner mode adds an undo history to window configurations.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">winner</span>
+  <span class="org-builtin">:ensure</span> <span class="org-rainbow-identifiers-identifier-13">winner</span>
+  <span class="org-builtin">:init</span> <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-rainbow-identifiers-identifier-9">winner-mode</span> <span class="org-rainbow-identifiers-identifier-1">1</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-unnumbered-27" class="outline-3">
+<h3 id="unnumbered-27">Navigation</h3>
+<div class="outline-text-3" id="text-unnumbered-27">
+</div><div id="outline-container-unnumbered-28" class="outline-4">
+<h4 id="unnumbered-28">The Silver Searcher</h4>
+<div class="outline-text-4" id="text-unnumbered-28">
+<p>
+Enable integration with Ag.  This must happen before <a href="#unnumbered-34">Projectile</a>
+</p>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">helm-ag</span>
+  <span class="org-builtin">:ensure</span> <span class="org-rainbow-identifiers-identifier-5">helm-ag</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-unnumbered-29" class="outline-4">
+<h4 id="unnumbered-29">Windmove</h4>
+<div class="outline-text-4" id="text-unnumbered-29">
+<p>
+Windmove beats using <code>C-x o</code> to toggle through windows
+</p>
+
+<p>
+Let's switch the binding from <code>Super</code> to <code>Meta</code> though
+</p>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">windmove</span>
+   <span class="org-builtin">:init</span> <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">progn</span>
+           <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-identifiers-identifier-1">windmove-default-keybindings</span> '<span class="org-rainbow-identifiers-identifier-11">meta</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-unnumbered-30" class="outline-4">
+<h4 id="unnumbered-30">Beginning of line</h4>
+<div class="outline-text-4" id="text-unnumbered-30">
+<p>
+Instead of <code>C-a</code> moving to column 0, go to first non-whitespace
+character.  THEN go to column 0.  And back again.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">defun</span> <span class="org-function-name">smarter-move-beginning-of-line</span> <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-rainbow-identifiers-identifier-9">arg</span><span class="org-rainbow-delimiters-depth-2">)</span>
+  <span class="org-doc">"Move point back to indentation of beginning of line.</span>
+
+<span class="org-doc">Move point to the first non-whitespace character on this line.</span>
+<span class="org-doc">If point is already there, move to beginning of the line.</span>
+<span class="org-doc">Effectively toggle between the first non-whitespace character and</span>
+<span class="org-doc">the beginning of the line.</span>
+
+<span class="org-doc">If ARG is not nil or 1, move forward ARG - 1 lines first.</span>
+<span class="org-doc">If point reaches the beginning or end of the buffer, stop there."</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-rainbow-identifiers-identifier-1">interactive</span> <span class="org-string">"^p"</span><span class="org-rainbow-delimiters-depth-2">)</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-rainbow-identifiers-identifier-12">setq</span> <span class="org-rainbow-identifiers-identifier-9">arg</span> <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-identifiers-identifier-12">or</span> <span class="org-rainbow-identifiers-identifier-9">arg</span> <span class="org-rainbow-identifiers-identifier-1">1</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span>
+
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">Move lines first</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">when</span> <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-identifiers-identifier-1">/=</span> <span class="org-rainbow-identifiers-identifier-9">arg</span> <span class="org-rainbow-identifiers-identifier-1">1</span><span class="org-rainbow-delimiters-depth-3">)</span>
+    <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-keyword">let</span> <span class="org-rainbow-delimiters-depth-4">(</span><span class="org-rainbow-delimiters-depth-5">(</span><span class="org-rainbow-identifiers-identifier-1">line-move-visual</span> <span class="org-rainbow-identifiers-identifier-2">nil</span><span class="org-rainbow-delimiters-depth-5">)</span><span class="org-rainbow-delimiters-depth-4">)</span>
+      <span class="org-rainbow-delimiters-depth-4">(</span><span class="org-rainbow-identifiers-identifier-4">forward</span> <span class="org-rainbow-delimiters-depth-5">(</span><span class="org-rainbow-identifiers-identifier-5">1-</span> <span class="org-rainbow-identifiers-identifier-9">arg</span><span class="org-rainbow-delimiters-depth-5">)</span><span class="org-rainbow-delimiters-depth-4">)</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span>
+
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">let</span> <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-delimiters-depth-4">(</span><span class="org-rainbow-identifiers-identifier-11">orig-point</span> <span class="org-rainbow-delimiters-depth-5">(</span><span class="org-rainbow-identifiers-identifier-1">point</span><span class="org-rainbow-delimiters-depth-5">)</span><span class="org-rainbow-delimiters-depth-4">)</span><span class="org-rainbow-delimiters-depth-3">)</span>
+    <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-identifiers-identifier-10">back-to-indentation</span><span class="org-rainbow-delimiters-depth-3">)</span>
+    <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-keyword">when</span> <span class="org-rainbow-delimiters-depth-4">(</span><span class="org-rainbow-identifiers-identifier-6">=</span> <span class="org-rainbow-identifiers-identifier-11">orig-point</span> <span class="org-rainbow-delimiters-depth-5">(</span><span class="org-rainbow-identifiers-identifier-1">point</span><span class="org-rainbow-delimiters-depth-5">)</span><span class="org-rainbow-delimiters-depth-4">)</span>
+      <span class="org-rainbow-delimiters-depth-4">(</span><span class="org-rainbow-identifiers-identifier-7">move-beginning-of-line</span> <span class="org-rainbow-identifiers-identifier-1">1</span><span class="org-rainbow-delimiters-depth-4">)</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+
+<span class="org-comment-delimiter">;; </span><span class="org-comment">remap C-a to `smarter-move-beginning-of-line`</span>
+<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-rainbow-identifiers-identifier-15">global-set-key</span> <span class="org-rainbow-delimiters-depth-2">[</span><span class="org-rainbow-identifiers-identifier-1">remap</span> <span class="org-rainbow-identifiers-identifier-7">move-beginning-of-line</span><span class="org-rainbow-delimiters-depth-2">]</span>
+                '<span class="org-rainbow-identifiers-identifier-14">smarter-move-beginning-of-line</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-unnumbered-31" class="outline-4">
+<h4 id="unnumbered-31">Visual expand</h4>
+<div class="outline-text-4" id="text-unnumbered-31">
+<p>
+Experiment with keybindings for visual expand
+</p>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">expand-region</span>
+  <span class="org-builtin">:ensure</span> <span class="org-rainbow-identifiers-identifier-9">expand-region</span>
+  <span class="org-builtin">:bind</span> <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-string">"C-="</span> <span class="org-rainbow-identifiers-identifier-15">.</span> <span class="org-rainbow-identifiers-identifier-7">er/expand-region</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-unnumbered-32" class="outline-4">
+<h4 id="unnumbered-32">Pop to mark</h4>
+<div class="outline-text-4" id="text-unnumbered-32">
+<p>
+Haven't built this into muscle memory yet.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-rainbow-identifiers-identifier-8">bind-key</span> <span class="org-string">"C-x p"</span> '<span class="org-rainbow-identifiers-identifier-6">pop-to-mark-command</span><span class="org-rainbow-delimiters-depth-1">)</span>
+<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-rainbow-identifiers-identifier-12">setq</span> <span class="org-rainbow-identifiers-identifier-4">set-mark-command-repeat-pop</span> <span class="org-rainbow-identifiers-identifier-8">t</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-unnumbered-33" class="outline-4">
+<h4 id="unnumbered-33">Switch to previous buffer</h4>
+<div class="outline-text-4" id="text-unnumbered-33">
+<p>
+Switch to last buffer. Absolutely essential.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">defun</span> <span class="org-function-name">mcw/switch-to-previous-buffer</span> <span class="org-rainbow-delimiters-depth-2">()</span>
+  <span class="org-doc">"Switch to previously open buffer.</span>
+<span class="org-doc">Repeated invocations toggle between the most recently open buffers."</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-rainbow-identifiers-identifier-1">interactive</span><span class="org-rainbow-delimiters-depth-2">)</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-rainbow-identifiers-identifier-11">switch-to-buffer</span> <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-identifiers-identifier-1">other-buffer</span> <span class="org-rainbow-delimiters-depth-4">(</span><span class="org-rainbow-identifiers-identifier-10">current-buffer</span><span class="org-rainbow-delimiters-depth-4">)</span> <span class="org-rainbow-identifiers-identifier-1">1</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+
+<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-rainbow-identifiers-identifier-8">bind-key</span> <span class="org-string">"C-c b"</span> '<span class="org-rainbow-identifiers-identifier-5">mcw/switch-to-previous-buffer</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-unnumbered-34" class="outline-4">
+<h4 id="unnumbered-34">Projectile</h4>
+<div class="outline-text-4" id="text-unnumbered-34">
+<p>
+<a href="https://github.com/bbatsov/projectile">Projectile</a> is a fantastic tool.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">projectile</span>
+  <span class="org-builtin">:ensure</span> <span class="org-rainbow-identifiers-identifier-4">projectile</span>
+  <span class="org-builtin">:diminish</span> <span class="org-rainbow-identifiers-identifier-14">projectile-mode</span>
+  <span class="org-builtin">:init</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">progn</span>
+    <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-identifiers-identifier-12">setq</span> <span class="org-rainbow-identifiers-identifier-8">projectile-keymap-prefix</span> <span class="org-rainbow-delimiters-depth-4">(</span><span class="org-rainbow-identifiers-identifier-5">kbd</span> <span class="org-string">"C-c p"</span><span class="org-rainbow-delimiters-depth-4">)</span><span class="org-rainbow-delimiters-depth-3">)</span>
+    <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-identifiers-identifier-15">projectile-global-mode</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+
+<p>
+Also enable helm-projectile, which teaches projectile to use helm.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">helm-projectile</span>
+  <span class="org-builtin">:ensure</span> <span class="org-rainbow-identifiers-identifier-13">helm-projectile</span>
+  <span class="org-builtin">:config</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-rainbow-identifiers-identifier-14">helm-projectile-on</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-unnumbered-35" class="outline-3">
+<h3 id="unnumbered-35">Org</h3>
+<div class="outline-text-3" id="text-unnumbered-35">
+</div><div id="outline-container-unnumbered-36" class="outline-4">
+<h4 id="unnumbered-36">Speed keys</h4>
+<div class="outline-text-4" id="text-unnumbered-36">
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-rainbow-identifiers-identifier-12">setq</span> <span class="org-rainbow-identifiers-identifier-15">org-use-speed-commands</span> <span class="org-rainbow-identifiers-identifier-8">t</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-unnumbered-37" class="outline-4">
+<h4 id="unnumbered-37">Publishing</h4>
+<div class="outline-text-4" id="text-unnumbered-37">
+</div><div id="outline-container-unnumbered-38" class="outline-5">
+<h5 id="unnumbered-38">Section numbers</h5>
+<div class="outline-text-5" id="text-unnumbered-38">
+<p>
+Don't bother adding section numbers.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-rainbow-identifiers-identifier-12">setq</span> <span class="org-rainbow-identifiers-identifier-15">org-export-with-section-numbers</span> <span class="org-rainbow-identifiers-identifier-2">nil</span><span class="org-rainbow-delimiters-depth-1">)</span>
+<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-rainbow-identifiers-identifier-12">setq</span> <span class="org-rainbow-identifiers-identifier-3">org-html-include-timestamps</span> <span class="org-rainbow-identifiers-identifier-2">nil</span><span class="org-rainbow-delimiters-depth-1">)</span>
+<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-rainbow-identifiers-identifier-12">setq</span> <span class="org-rainbow-identifiers-identifier-12">org-export-with-sub-superscripts</span> <span class="org-rainbow-identifiers-identifier-2">nil</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-unnumbered-39" class="outline-5">
+<h5 id="unnumbered-39">Stylesheets</h5>
+<div class="outline-text-5" id="text-unnumbered-39">
+<p>
+How to style stuffs for export purposes
+</p>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">defun</span> <span class="org-function-name">mcw/get-org-htmlize-css-string</span> <span class="org-rainbow-delimiters-depth-2">()</span>
+  <span class="org-doc">"Get CSS from org-html-htmlize-generate-css buffer"</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">save-current-buffer</span>
+    <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-identifiers-identifier-14">org-html-htmlize-generate-css</span><span class="org-rainbow-delimiters-depth-3">)</span>
+    <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-keyword">let</span> <span class="org-rainbow-delimiters-depth-4">(</span><span class="org-rainbow-delimiters-depth-5">(</span><span class="org-rainbow-identifiers-identifier-3">css-tag</span> <span class="org-rainbow-delimiters-depth-6">(</span><span class="org-rainbow-identifiers-identifier-1">buffer-string</span><span class="org-rainbow-delimiters-depth-6">)</span><span class="org-rainbow-delimiters-depth-5">)</span><span class="org-rainbow-delimiters-depth-4">)</span>
+      <span class="org-rainbow-delimiters-depth-4">(</span><span class="org-rainbow-identifiers-identifier-14">kill-buffer</span><span class="org-rainbow-delimiters-depth-4">)</span>
+      <span class="org-rainbow-identifiers-identifier-3">css-tag</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+
+<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-rainbow-identifiers-identifier-12">setq</span> <span class="org-rainbow-identifiers-identifier-7">org-html-htmlize-output-type</span> '<span class="org-rainbow-identifiers-identifier-9">css</span><span class="org-rainbow-delimiters-depth-1">)</span>
+<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-rainbow-identifiers-identifier-12">setq</span> <span class="org-rainbow-identifiers-identifier-6">org-src-fontify-natively</span> <span class="org-rainbow-identifiers-identifier-8">t</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-unnumbered-40" class="outline-5">
+<h5 id="unnumbered-40">Publish config file</h5>
+<div class="outline-text-5" id="text-unnumbered-40">
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">defun</span> <span class="org-function-name">mcw/org-share-emacs</span> <span class="org-rainbow-delimiters-depth-2">()</span>
+  <span class="org-doc">"Publish emacs config"</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-rainbow-identifiers-identifier-1">interactive</span><span class="org-rainbow-delimiters-depth-2">)</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-rainbow-identifiers-identifier-12">setq</span> <span class="org-rainbow-identifiers-identifier-8">org-html-doctype</span> <span class="org-string">"html5"</span><span class="org-rainbow-delimiters-depth-2">)</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-rainbow-identifiers-identifier-12">setq</span> <span class="org-rainbow-identifiers-identifier-11">org-html-html5-fancy</span> <span class="org-rainbow-identifiers-identifier-8">t</span><span class="org-rainbow-delimiters-depth-2">)</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">with-current-buffer</span> <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-identifiers-identifier-12">find-file</span> <span class="org-string">"~/.emacs.d/mwestbom.org"</span><span class="org-rainbow-delimiters-depth-3">)</span>
+    <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-keyword">save-restriction</span>
+      <span class="org-rainbow-delimiters-depth-4">(</span><span class="org-keyword">save-excursion</span>
+        <span class="org-rainbow-delimiters-depth-5">(</span><span class="org-rainbow-identifiers-identifier-12">widen</span><span class="org-rainbow-delimiters-depth-5">)</span>
+        <span class="org-rainbow-delimiters-depth-5">(</span><span class="org-rainbow-identifiers-identifier-9">org-html-export-to-html</span><span class="org-rainbow-delimiters-depth-5">)</span><span class="org-rainbow-delimiters-depth-4">)</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-unnumbered-41" class="outline-3">
+<h3 id="unnumbered-41">Programming</h3>
+<div class="outline-text-3" id="text-unnumbered-41">
+</div><div id="outline-container-unnumbered-42" class="outline-4">
+<h4 id="unnumbered-42">Git</h4>
+<div class="outline-text-4" id="text-unnumbered-42">
+<p>
+Emacs has so many fantastic get-related tools.
+</p>
+</div>
+<div id="outline-container-unnumbered-43" class="outline-5">
+<h5 id="unnumbered-43">Magit</h5>
+<div class="outline-text-5" id="text-unnumbered-43">
+<p>
+Magit is 90% of why I moved over to it in the first place.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">magit</span>
+  <span class="org-builtin">:commands</span> <span class="org-rainbow-identifiers-identifier-2">magit-status</span>
+  <span class="org-builtin">:load-path</span> <span class="org-string">"site-lisp/magit"</span>
+  <span class="org-builtin">:init</span> <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">progn</span>
+          <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-keyword">use-package</span> <span class="org-constant">dash</span>
+            <span class="org-builtin">:ensure</span> <span class="org-rainbow-identifiers-identifier-8">t</span><span class="org-rainbow-delimiters-depth-3">)</span>
+          <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-identifiers-identifier-8">bind-key</span> <span class="org-string">"C-x g"</span> '<span class="org-rainbow-identifiers-identifier-2">magit-status</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-unnumbered-44" class="outline-5">
+<h5 id="unnumbered-44">Gist</h5>
+<div class="outline-text-5" id="text-unnumbered-44">
+<p>
+Here's a handy tool for working with gists.  I don't use it very often, but I enjoy it when I do.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">gist</span>
+  <span class="org-builtin">:ensure</span> <span class="org-rainbow-identifiers-identifier-4">gist</span>
+  <span class="org-builtin">:commands</span> <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-rainbow-identifiers-identifier-7">gist-buffer</span> <span class="org-rainbow-identifiers-identifier-8">gist-region</span> <span class="org-rainbow-identifiers-identifier-9">gist-list</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-unnumbered-45" class="outline-5">
+<h5 id="unnumbered-45">git-timemachine</h5>
+<div class="outline-text-5" id="text-unnumbered-45">
+<p>
+Lets you flip back and forth through a file's VC history
+</p>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">git-timemachine</span>
+  <span class="org-builtin">:ensure</span> <span class="org-rainbow-identifiers-identifier-15">git-timemachine</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-unnumbered-46" class="outline-5">
+<h5 id="unnumbered-46">git-messenger</h5>
+<div class="outline-text-5" id="text-unnumbered-46">
+<p>
+Shows most recent commit message for line under mark
+</p>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">git-messenger</span>
+  <span class="org-builtin">:ensure</span> <span class="org-rainbow-identifiers-identifier-8">t</span>
+  <span class="org-builtin">:bind</span> <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-rainbow-delimiters-depth-3">(</span><span class="org-string">"C-x v p"</span> <span class="org-rainbow-identifiers-identifier-15">.</span> <span class="org-rainbow-identifiers-identifier-15">git-messenger:popup-message</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-unnumbered-47" class="outline-4">
+<h4 id="unnumbered-47">Rainbows!</h4>
+<div class="outline-text-4" id="text-unnumbered-47">
+</div><div id="outline-container-unnumbered-48" class="outline-5">
+<h5 id="unnumbered-48">Rainbow identifiers</h5>
+<div class="outline-text-5" id="text-unnumbered-48">
+<p>
+Lots and lots of colors&#x2026;
+</p>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">rainbow-identifiers</span>
+  <span class="org-builtin">:ensure</span> <span class="org-rainbow-identifiers-identifier-13">rainbow-identifiers</span>
+  <span class="org-builtin">:config</span> <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">progn</span>
+            <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-identifiers-identifier-11">add-hook</span> '<span class="org-rainbow-identifiers-identifier-2">prog-mode-hook</span> '<span class="org-rainbow-identifiers-identifier-1">rainbow-identifiers-mode</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-unnumbered-49" class="outline-5">
+<h5 id="unnumbered-49">Rainbow Delimiters</h5>
+<div class="outline-text-5" id="text-unnumbered-49">
+<p>
+Individually color delimiters, to differentiate levels of nesting.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">rainbow-delimiters</span>
+  <span class="org-builtin">:ensure</span> <span class="org-rainbow-identifiers-identifier-5">rainbow-delimiters</span>
+  <span class="org-builtin">:config</span> <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">progn</span>
+            <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-identifiers-identifier-11">add-hook</span> '<span class="org-rainbow-identifiers-identifier-2">prog-mode-hook</span> '<span class="org-rainbow-identifiers-identifier-13">rainbow-delimiters-mode</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-unnumbered-50" class="outline-4">
+<h4 id="unnumbered-50">Autocomplete</h4>
+<div class="outline-text-4" id="text-unnumbered-50">
+<p>
+Bring in company mode for autocomplete
+</p>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">company</span>
+  <span class="org-builtin">:ensure</span> <span class="org-rainbow-identifiers-identifier-7">company</span>
+  <span class="org-builtin">:diminish</span> <span class="org-rainbow-identifiers-identifier-15">company-mode</span>
+  <span class="org-builtin">:config</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-rainbow-identifiers-identifier-11">add-hook</span> '<span class="org-rainbow-identifiers-identifier-2">prog-mode-hook</span> '<span class="org-rainbow-identifiers-identifier-15">company-mode</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-unnumbered-51" class="outline-4">
+<h4 id="unnumbered-51">Flycheck</h4>
+<div class="outline-text-4" id="text-unnumbered-51">
+<p>
+Enables support for linting in a bunch of different languages.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">flycheck</span>
+  <span class="org-builtin">:ensure</span> <span class="org-rainbow-identifiers-identifier-8">t</span>
+  <span class="org-builtin">:init</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-rainbow-identifiers-identifier-3">global-flycheck-mode</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-unnumbered-52" class="outline-4">
+<h4 id="unnumbered-52">Smartparens</h4>
+<div class="outline-text-4" id="text-unnumbered-52">
+<p>
+Enable automatic matching of paired syntax tokens.  This is brilliant.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">smartparens</span>
+  <span class="org-builtin">:ensure</span> <span class="org-rainbow-identifiers-identifier-11">smartparens</span>
+  <span class="org-builtin">:config</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">progn</span>
+    <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-keyword">require</span> '<span class="org-constant">smartparens-config</span><span class="org-rainbow-delimiters-depth-3">)</span>
+    <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-identifiers-identifier-2">smartparens-global-mode</span> <span class="org-rainbow-identifiers-identifier-1">1</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-unnumbered-53" class="outline-4">
+<h4 id="unnumbered-53">Web mode</h4>
+<div class="outline-text-4" id="text-unnumbered-53">
+<p>
+Web mode is pretty great about handling mixed-mode files like
+HTML pages with javascript, or handlebars template pages.
+</p>
+
+<p>
+Enable it for handlebars files.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">web-mode</span>
+  <span class="org-builtin">:ensure</span> <span class="org-rainbow-identifiers-identifier-8">t</span>
+  <span class="org-builtin">:mode</span> <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-string">"\\.hbs\\'"</span> <span class="org-rainbow-identifiers-identifier-15">.</span> <span class="org-rainbow-identifiers-identifier-5">web-mode</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-unnumbered-54" class="outline-4">
+<h4 id="unnumbered-54">Various language modes</h4>
+<div class="outline-text-4" id="text-unnumbered-54">
+</div><div id="outline-container-unnumbered-55" class="outline-5">
+<h5 id="unnumbered-55">Ruby</h5>
+<div class="outline-text-5" id="text-unnumbered-55">
+</div><ul class="org-ul"><li><a id="unnumbered-56"></a>enh-ruby-mode<br ><div class="outline-text-6" id="text-unnumbered-56">
+<p>
+Replace standard ruby mode with enh-ruby-mode.  I like its indentation engine better.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">enh-ruby-mode</span>
+  <span class="org-builtin">:ensure</span> <span class="org-rainbow-identifiers-identifier-8">t</span>
+  <span class="org-builtin">:diminish</span> <span class="org-rainbow-identifiers-identifier-1">enh-ruby-mode</span>
+  <span class="org-builtin">:commands</span> <span class="org-rainbow-identifiers-identifier-1">enh-ruby-mode</span>
+  <span class="org-builtin">:init</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">progn</span>
+    <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-identifiers-identifier-9">add-to-list</span> '<span class="org-rainbow-identifiers-identifier-7">auto-mode-alist</span> '<span class="org-rainbow-delimiters-depth-4">(</span><span class="org-string">"\\.rb$"</span> <span class="org-rainbow-identifiers-identifier-15">.</span> <span class="org-rainbow-identifiers-identifier-1">enh-ruby-mode</span><span class="org-rainbow-delimiters-depth-4">)</span><span class="org-rainbow-delimiters-depth-3">)</span>
+    <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-identifiers-identifier-9">add-to-list</span> '<span class="org-rainbow-identifiers-identifier-2">interpreter-mode-alist</span> '<span class="org-rainbow-delimiters-depth-4">(</span><span class="org-string">"ruby"</span> <span class="org-rainbow-identifiers-identifier-15">.</span> <span class="org-rainbow-identifiers-identifier-1">enh-ruby-mode</span><span class="org-rainbow-delimiters-depth-4">)</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="unnumbered-57"></a>rspec mode<br ><div class="outline-text-6" id="text-unnumbered-57">
+<p>
+Run rspec from emacs.  I love this so much.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">rspec-mode</span>
+  <span class="org-builtin">:ensure</span> <span class="org-rainbow-identifiers-identifier-7">rspec-mode</span>
+  <span class="org-builtin">:diminish</span> <span class="org-rainbow-identifiers-identifier-7">rspec-mode</span>
+  <span class="org-builtin">:commands</span> <span class="org-rainbow-identifiers-identifier-7">rspec-mode</span>
+  <span class="org-builtin">:init</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">progn</span>
+    <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-identifiers-identifier-11">add-hook</span> '<span class="org-rainbow-identifiers-identifier-7">enh-ruby-mode-hook</span> '<span class="org-rainbow-identifiers-identifier-7">rspec-mode</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span>
+  <span class="org-builtin">:config</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">progn</span>
+    <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-identifiers-identifier-12">setq</span> <span class="org-rainbow-identifiers-identifier-3">rspec-command-options</span> <span class="org-string">"--fail-fast --format documentation"</span><span class="org-rainbow-delimiters-depth-3">)</span>
+    <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-identifiers-identifier-7">inf-ruby-switch-setup</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="unnumbered-58"></a>rbenv<br ><div class="outline-text-6" id="text-unnumbered-58">
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">rbenv</span>
+  <span class="org-builtin">:ensure</span> <span class="org-rainbow-identifiers-identifier-8">t</span>
+  <span class="org-builtin">:commands</span> <span class="org-rainbow-identifiers-identifier-10">rbenv-use-global</span>
+  <span class="org-builtin">:init</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">progn</span>
+    <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-identifiers-identifier-11">add-hook</span> '<span class="org-rainbow-identifiers-identifier-7">enh-ruby-mode-hook</span> '<span class="org-rainbow-identifiers-identifier-10">rbenv-use-global</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</li></ul>
+</div>
+<div id="outline-container-unnumbered-59" class="outline-5">
+<h5 id="unnumbered-59">Markdown</h5>
+<div class="outline-text-5" id="text-unnumbered-59">
+<p>
+Enable markdown mode
+</p>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">markdown-mode</span>
+  <span class="org-builtin">:ensure</span> <span class="org-rainbow-identifiers-identifier-8">t</span>
+  <span class="org-builtin">:mode</span> <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-string">"\\.md\\'"</span> <span class="org-rainbow-identifiers-identifier-15">.</span> <span class="org-rainbow-identifiers-identifier-10">markdown-mode</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-unnumbered-60" class="outline-5">
+<h5 id="unnumbered-60">Docker</h5>
+<div class="outline-text-5" id="text-unnumbered-60">
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">dockerfile-mode</span>
+  <span class="org-builtin">:ensure</span> <span class="org-rainbow-identifiers-identifier-8">t</span>
+  <span class="org-builtin">:mode</span> <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-string">"Dockerfile\\'"</span> <span class="org-rainbow-identifiers-identifier-15">.</span> <span class="org-rainbow-identifiers-identifier-15">dockerfile-mode</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-unnumbered-61" class="outline-5">
+<h5 id="unnumbered-61">Javascript</h5>
+<div class="outline-text-5" id="text-unnumbered-61">
+<p>
+js2-mode seems to have the best indentation/linting support.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">js2-mode</span>
+  <span class="org-builtin">:commands</span> <span class="org-rainbow-identifiers-identifier-8">js2-mode</span>
+  <span class="org-builtin">:ensure</span> <span class="org-rainbow-identifiers-identifier-8">t</span>
+  <span class="org-builtin">:init</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">progn</span>
+    <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-identifiers-identifier-9">add-to-list</span> '<span class="org-rainbow-identifiers-identifier-7">auto-mode-alist</span> '<span class="org-rainbow-delimiters-depth-4">(</span><span class="org-string">"\\.js$"</span> <span class="org-rainbow-identifiers-identifier-15">.</span> <span class="org-rainbow-identifiers-identifier-8">js2-mode</span><span class="org-rainbow-delimiters-depth-4">)</span><span class="org-rainbow-delimiters-depth-3">)</span>
+    <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-identifiers-identifier-9">add-to-list</span> '<span class="org-rainbow-identifiers-identifier-2">interpreter-mode-alist</span> <span class="org-rainbow-delimiters-depth-4">(</span><span class="org-rainbow-identifiers-identifier-8">cons</span> <span class="org-string">"node"</span> '<span class="org-rainbow-identifiers-identifier-8">js2-mode</span><span class="org-rainbow-delimiters-depth-4">)</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-unnumbered-62" class="outline-5">
+<h5 id="unnumbered-62">Yaml</h5>
+<div class="outline-text-5" id="text-unnumbered-62">
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">yaml-mode</span>
+  <span class="org-builtin">:ensure</span> <span class="org-rainbow-identifiers-identifier-9">yaml-mode</span>
+  <span class="org-builtin">:mode</span> <span class="org-string">"\\.yml\\'"</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-unnumbered-63" class="outline-3">
+<h3 id="unnumbered-63">Terminals and shells</h3>
+<div class="outline-text-3" id="text-unnumbered-63">
+</div><div id="outline-container-unnumbered-64" class="outline-5">
+<h5 id="unnumbered-64">Multi term</h5>
+<div class="outline-text-5" id="text-unnumbered-64">
+<p>
+multi-term adds some useful features, like running multiple
+terminal emulators, and a dedicated term buffer.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">multi-term</span>
+  <span class="org-builtin">:ensure</span> <span class="org-rainbow-identifiers-identifier-3">multi-term</span>
+  <span class="org-builtin">:bind</span> <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-string">"&lt;f5&gt;"</span> <span class="org-rainbow-identifiers-identifier-15">.</span> <span class="org-rainbow-identifiers-identifier-12">multi-term-dedicated-toggle</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Michael Westbom</p>
+<p class="date">Created: 2015-01-29 Thu 22:32</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.4.1 (<a href="http://orgmode.org">Org</a> mode 8.3beta)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
