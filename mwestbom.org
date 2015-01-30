@@ -1,20 +1,23 @@
 #+TITLE: Michael Westbom's Emacs configuration
 #+OPTIONS: toc:4 h:4
+#+HTML_HEAD: <link href="http://cdn.foundation5.zurb.com/foundation.css" rel="stylesheet">
 
 * Configuration
+** About this file
+   This is my configuration file.  It can be loaded by Emacs via org-babel.
+   The contents of my =~/.emacs/init.el= simplify to this, which loads it:
+   #+BEGIN_SRC emacs-lisp :tangle no
+     (add-hook 'after-init-hook
+               (lambda ()
+                 (org-babel-load-file
+                  (expand-file-name "mwestbom.org" user-emacs-directory))))
+   #+END_SRC
+   One can evaluate individual blocks of this file by putting =(point)= on them
+   and calling =org-edit-special=, which is bound by default to =C-c \'=
+
+   Then =M-x eval-buffer= to evaluate them.
 ** Package management
 *** Sources
-    Let's begin by setting up the package system.  First we'll disable it,
-    then make sure melpa, the de-facto package repo, is enabled.
-
-    #+begin_src emacs-lisp
-      (setq package-enable-at-startup nil)
-      (unless (assoc-default "melpa" package-archives)
-        (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
-        (package-refresh-contents))
-
-      (package-initialize)
-    #+end_src
 *** use-package
     Now we'll enable John Wiegley's phenomenal [[https://github.com/jwiegley/use-package][use-package]] library:
 
@@ -185,7 +188,7 @@ this out eventually.
   (setq
    backup-by-copying t
    backup-directory-alist '(("." . "~/.emacs.d/saves"))
-   delete-old-versions nil
+   delete-old-versions -1
    version-control t)
 
   (let
@@ -362,11 +365,27 @@ this out eventually.
        (setq org-html-include-timestamps nil)
        (setq org-export-with-sub-superscripts nil)
      #+END_SRC
+**** Stylesheets
+     How to style stuffs for export purposes
+     #+BEGIN_SRC emacs-lisp
+       (defun mcw/get-org-htmlize-css-string ()
+         "Get CSS from org-html-htmlize-generate-css buffer"
+         (save-current-buffer
+           (org-html-htmlize-generate-css)
+           (let ((css-tag (buffer-string)))
+             (kill-buffer)
+             css-tag)))
+
+       (setq org-html-htmlize-output-type 'css)
+       (setq org-src-fontify-natively t)
+     #+END_SRC
 **** Publish config file
      #+BEGIN_SRC emacs-lisp
        (defun mcw/org-share-emacs ()
          "Publish emacs config"
          (interactive)
+         (setq org-html-doctype "html5")
+         (setq org-html-html5-fancy t)
          (with-current-buffer (find-file "~/.emacs.d/mwestbom.org")
            (save-restriction
              (save-excursion
