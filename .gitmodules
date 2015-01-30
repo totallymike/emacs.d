@@ -1,4 +1,0 @@
-[submodule "site-lisp/magit"]
-	path = site-lisp/magit
-	url = https://github.com:magit/magit.git
-	branch = next
