@@ -2,3 +2,6 @@
 	path = site-lisp/magit
 	url = git@github.com:magit/magit.git
 	branch = next
+[submodule "site-lisp/yasnippet-snippets"]
+	path = site-lisp/yasnippet-snippets
+	url = https://github.com/AndreaCrotti/yasnippet-snippets
