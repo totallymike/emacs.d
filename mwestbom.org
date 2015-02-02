@@ -1,3 +1,16 @@
+#+OPTIONS: html-link-use-abs-url:nil html-postamble:auto
+#+OPTIONS: html-preamble:t html-scripts:t html-style:t html5-fancy:t
+#+OPTIONS: tex:t
+#+HTML_DOCTYPE: html5
+#+HTML_CONTAINER: div
+#+HTML_LINK_HOME:
+#+HTML_LINK_UP:
+#+HTML_HEAD: <link href="http://cdn.foundation5.zurb.com/foundation.css" rel="stylesheet">
+#+HTML_HEAD_EXTRA:
+#+HTML_MATHJAX:
+#+INFOJS_OPT:
+#+CREATOR: <a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.4.1 (<a href="http://orgmode.org">Org</a> mode 8.3beta)
+#+LATEX_HEADER:
 #+TITLE: Michael Westbom's Emacs configuration
 #+OPTIONS: toc:4 h:4
 #+HTML_HEAD: <link href="http://cdn.foundation5.zurb.com/foundation.css" rel="stylesheet">
@@ -50,6 +63,28 @@
     #+begin_src emacs-lisp
     (blink-cursor-mode 0)
     #+end_src
+*** Display
+**** Toolbar
+     Emacs comes with a toolbar.  It's redundant.
+     #+BEGIN_SRC emacs-lisp
+       (tool-bar-mode -1)
+     #+END_SRC
+*** Buffers
+**** Uniquify
+     By default, files with the same name but in different folders
+     aren't well distinguished.  Uniquify, built into Emacs, solves this.
+***** Name style
+      By default, Uniquify names buffers like this:
+      - post.js<1>
+      - post.js<2>
+
+      Let's name them like this:
+      - app/models/post.js
+      - app/controllers/post.js
+
+     #+BEGIN_SRC emacs-lisp
+       (setq uniquify-buffer-name-style 'forward)
+     #+END_SRC
 *** Help and discoverability.
 
 Let's enable guide-key.  This tells you what possible bindings
@@ -58,6 +93,7 @@ are available based on what you've already pressed.
 #+Begin_src emacs-lisp
   (use-package guide-key-tip
     :ensure t
+    :diminish guide-key-mode
     :init
     (progn
       (setq guide-key/guide-key-sequence `("C-x"
@@ -153,14 +189,15 @@ are available based on what you've already pressed.
     Also replace the standard =M-x= with =helm-M-x=
 
     #+begin_src emacs-lisp
-    (use-package helm
-    :ensure t
-    :init
-    (progn
-      (require 'helm-config)
-      (global-set-key (kbd "M-x") 'helm-M-x)
-      (global-set-key (kbd "M-y") 'helm-show-kill-ring)
-      (helm-mode)))
+      (use-package helm
+        :ensure t
+        :diminish helm-mode
+        :init
+        (progn
+          (require 'helm-config)
+          (global-set-key (kbd "M-x") 'helm-M-x)
+          (global-set-key (kbd "M-y") 'helm-show-kill-ring)
+          (helm-mode)))
     #+end_src
 
 **** Disable ido-mode
@@ -217,6 +254,22 @@ this out eventually.
             :ensure smart-mode-line-powerline-theme))
         :config
         (progn
+          (setq-default mode-line-format
+                        '("%e"
+                          mode-line-front-space
+                          mode-line-mule-info
+                          mode-line-client
+                          mode-line-modified
+                          mode-line-remote
+                          mode-line-frame-identification
+                          mode-line-buffer-identification
+                          sml/pos-id-separator
+                          mode-line-position
+                          (vc-mode vc-mode)
+                          sml/pre-modes-separator
+                          mode-line-modes
+                          mode-line-misc-info
+                          mode-line-end-spaces))
           (sml/setup)))
     #+end_src
 
@@ -380,6 +433,7 @@ this out eventually.
        (setq org-src-fontify-natively t)
      #+END_SRC
 **** Publish config file
+     Publish my config file.
      #+BEGIN_SRC emacs-lisp
        (defun mcw/org-share-emacs ()
          "Publish emacs config"
@@ -390,7 +444,9 @@ this out eventually.
            (save-restriction
              (save-excursion
                (widen)
-               (org-html-export-to-html)))))
+               (remove-hook 'prog-mode-hook 'rainbow-identifiers-mode)
+               (org-html-export-to-html)
+               (add-hook 'prog-mode-hook 'rainbow-identifiers-mode)))))
      #+END_SRC
 ** Programming
 *** Git
@@ -404,7 +460,10 @@ this out eventually.
          :init (progn
                  (use-package dash
                    :ensure t)
-                 (bind-key "C-x g" 'magit-status)))
+                 (bind-key "C-x g" 'magit-status))
+         :config
+         (progn
+           (setq magit-diff-options '("-b"))))
      #+END_SRC
 
 **** Gist
@@ -433,7 +492,7 @@ this out eventually.
      Lots and lots of colors...
      #+BEGIN_SRC emacs-lisp
        (use-package rainbow-identifiers
-         :ensure rainbow-identifiers
+         :ensure rainbow-delimiters
          :config (progn
                    (add-hook 'prog-mode-hook 'rainbow-identifiers-mode)))
      #+END_SRC
@@ -460,6 +519,7 @@ this out eventually.
     #+BEGIN_SRC emacs-lisp
       (use-package flycheck
         :ensure t
+        :diminish flycheck-mode
         :init
         (global-flycheck-mode))
     #+END_SRC
@@ -468,6 +528,7 @@ this out eventually.
     #+BEGIN_SRC emacs-lisp
       (use-package smartparens
         :ensure smartparens
+        :diminish smartparens-mode
         :config
         (progn
           (require 'smartparens-config)
@@ -483,6 +544,21 @@ this out eventually.
         :ensure t
         :mode ("\\.hbs\\'" . web-mode))
     #+END_SRC
+*** Clojure
+**** Clojure mode
+     #+BEGIN_SRC emacs-lisp
+       (use-package clojure-mode
+         :commands clojure-mode
+         :mode (("\\.clj\\'" . clojure-mode)
+                ("\\.cljs\\'" . clojure-mode)))
+     #+END_SRC
+**** Cider
+     #+BEGIN_SRC emacs-lisp
+       (use-package cider
+         :ensure cider
+         :commands cider-jack-in
+         :bind ("C-c M-j" . cider-jack-in))
+     #+END_SRC
 *** Various language modes
 **** Ruby
 ***** enh-ruby-mode
@@ -547,6 +623,14 @@ this out eventually.
            (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
            (add-to-list 'interpreter-mode-alist (cons "node" 'js2-mode))))
      #+END_SRC
+**** CSS
+***** Less
+      #+BEGIN_SRC emacs-lisp
+        (use-package less-css-mode
+          :commands less-css-mode
+          :ensure less-css-mode
+          :mode ("\\.less\\'" . less-css-mode))
+      #+END_SRC
 **** Yaml
      #+BEGIN_SRC emacs-lisp
        (use-package yaml-mode
