@@ -532,6 +532,7 @@ this out eventually.
         :config
         (progn
           (require 'smartparens-config)
+          (smartparens-global-strict-mode)
           (smartparens-global-mode 1)))
     #+END_SRC
 *** Web mode
