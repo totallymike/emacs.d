@@ -600,6 +600,15 @@ this out eventually.
           (progn
             (add-hook 'enh-ruby-mode-hook 'rbenv-use-global)))
       #+END_SRC
+***** projectile-rails
+      Add projectile rails for rails-specific completions, finders, commands
+      #+BEGIN_SRC emacs-lisp
+        (use-package projectile-rails
+          :ensure projectile-rails
+          :commands projectile-rails-on
+          :init
+          (add-hook 'projectile-mode-hook 'projectile-rails-on))
+      #+END_SRC
 **** Markdown
     Enable markdown mode
     #+BEGIN_SRC emacs-lisp
