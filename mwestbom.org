@@ -577,6 +577,9 @@ this out eventually.
 
 ***** rspec mode
       Run rspec from emacs.  I love this so much.
+
+      Overwrite the default predicate method for rspec mode, because it doesn't play
+      nicely with rbenv
       #+BEGIN_SRC emacs-lisp
         (use-package rspec-mode
           :ensure rspec-mode
@@ -588,6 +591,15 @@ this out eventually.
           :config
           (progn
             (setq rspec-command-options "--fail-fast --format documentation")
+            (defun rspec-spring-p ()
+              (and rspec-use-spring-when-possible
+                   (let ((root (directory-file-name (rspec-project-root))))
+                     (or
+                      (file-exists-p (format "%s/tmp/spring/spring.pid" root))
+                      (file-exists-p (format "%s/spring/%s.pid" temporary-file-directory (md5 root)))
+                      (let ((path (or (getenv "XDG_RUNTIME_DIR") temporary-file-directory))
+                            (ruby-version (getenv "RBENV_VERSION")))
+                        (file-exists-p (format "%s/spring/%s.pid" path (md5 (concat ruby-version root)))))))))
             (inf-ruby-switch-setup)))
       #+END_SRC
 
