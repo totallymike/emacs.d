@@ -188,6 +188,9 @@ are available based on what you've already pressed.
 
     Also replace the standard =M-x= with =helm-M-x=
 
+    Still further, we'll replace =C-x b= (switch-to-buffer) with
+    helm-mini, which is crazy smart
+
     #+begin_src emacs-lisp
       (use-package helm
         :ensure t
@@ -197,6 +200,7 @@ are available based on what you've already pressed.
           (require 'helm-config)
           (global-set-key (kbd "M-x") 'helm-M-x)
           (global-set-key (kbd "M-y") 'helm-show-kill-ring)
+          (global-set-key (kbd "C-x b") 'helm-mini)
           (helm-mode)))
     #+end_src
 
