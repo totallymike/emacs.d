@@ -545,12 +545,20 @@ this out eventually.
 *** Smartparens
     Enable automatic matching of paired syntax tokens.  This is brilliant.
     #+BEGIN_SRC emacs-lisp
+      (defun mcw/web-mode-is-code-context (id action context)
+        (when (and (eq action 'insert)
+                   (not (or (get-text-property (point) 'part-side)
+                            (get-text-property (point) 'block-side))))
+          t))
+
+
       (use-package smartparens
         :ensure smartparens
         :diminish smartparens-mode
         :config
         (progn
           (require 'smartparens-config)
+          (sp-local-pair 'web-mode "<" nil :when '(sp-web-mode-is-code-context))
           (smartparens-global-strict-mode)
           (smartparens-global-mode 1)))
     #+END_SRC
@@ -560,9 +568,16 @@ this out eventually.
 
     Enable it for handlebars files.
     #+BEGIN_SRC emacs-lisp
+      ;; From faq at http://web-mode.org/ for smartparens
+      (defun mcw/web-mode-hook ()
+        (setq web-mode-enable-auto-pairing nil))
+
       (use-package web-mode
         :ensure t
-        :mode ("\\.hbs\\'" . web-mode))
+        :mode ("\\.hbs\\'" . web-mode)
+        :init
+        (progn
+          (add-hook 'web-mode-hook 'mcw/web-mode-hook)))
     #+END_SRC
 *** Clojure
 **** Clojure mode
