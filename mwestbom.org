@@ -514,6 +514,16 @@ this out eventually.
          :config (progn
                    (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)))
      #+END_SRC
+*** Yasnippet
+    Loads and loads of useful snippets.  The ability to add more snippets
+    #+BEGIN_SRC emacs-lisp
+      (use-package yasnippet
+        :ensure yasnippet
+        :init
+        (progn
+          (add-to-list 'yas-snippet-dirs "site-lisp/yasnippet-snippets")
+          (yas-global-mode 1)))
+    #+END_SRC
 *** Autocomplete
     Bring in company mode for autocomplete
     #+BEGIN_SRC emacs-lisp
