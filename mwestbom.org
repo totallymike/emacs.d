@@ -409,6 +409,11 @@ this out eventually.
         (helm-projectile-on))
     #+END_SRC
 ** Org
+*** Literate programming
+    Just use the same window for the source buffer.
+    #+BEGIN_SRC emacs-lisp
+      (setq org-src-window-setup 'current-window)
+    #+END_SRC
 *** Speed keys
     #+BEGIN_SRC emacs-lisp
       (setq org-use-speed-commands t)
