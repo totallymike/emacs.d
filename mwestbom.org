@@ -69,6 +69,13 @@
      #+BEGIN_SRC emacs-lisp
        (tool-bar-mode -1)
      #+END_SRC
+**** Golden ratio
+     Let's add the golden ratio addon to allow for automatically resizing windows.
+     #+BEGIN_SRC emacs-lisp
+       (use-package golden-ratio
+         :ensure golden-ratio
+         :commands golden-ratio)
+     #+END_SRC
 *** Buffers
 **** Uniquify
      By default, files with the same name but in different folders
