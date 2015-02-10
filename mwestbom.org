@@ -528,7 +528,7 @@ this out eventually.
         :ensure yasnippet
         :init
         (progn
-          (add-to-list 'yas-snippet-dirs "site-lisp/yasnippet-snippets")
+          (add-to-list 'yas-snippet-dirs "~/.emacs.d/site-lisp/yasnippet-snippets")
           (yas-global-mode 1)))
     #+END_SRC
 *** Autocomplete
