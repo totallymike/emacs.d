@@ -175,20 +175,17 @@ are available based on what you've already pressed.
     (fset 'yes-or-no-p 'y-or-n-p)
     #+end_src
 *** Color scheme
+    Base16 railscast.
+    #+begin_src emacs-lisp
+      (defun mcw/load-theme ()
+        (if (package-installed-p 'base16-theme)
+            (load-theme 'base16-railscasts)
+          (progn
+            (package-install 'base16-theme)
+            (mcw/load-theme))))
 
-    Zenburn. Set it.  If it's not there, download it.
-
-#+begin_src emacs-lisp
-  (defun mcw/load-theme ()
-    (if (package-installed-p 'zenburn-theme)
-        (load-theme 'zenburn)
-      (progn
-        (package-install 'zenburn-theme)
-        (mcw/load-theme))))
-
-  (mcw/load-theme)
-#+end_src
-
+      (mcw/load-theme)
+    #+end_src
 *** Helm
     Helm is, in my opinion, the best minibuffer completion thing.
     Let's stick it just about everywhere.
