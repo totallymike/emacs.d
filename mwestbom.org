@@ -186,6 +186,18 @@ are available based on what you've already pressed.
 
       (mcw/load-theme)
     #+end_src
+*** Multiple cursors
+    :heart: multiple cursors
+    #+BEGIN_SRC emacs-lisp
+      (use-package multiple-cursors
+        :ensure multiple-cursors
+        :commands (mc/mark-next-like-this mc/mark-previous-like-this mc/mark-all-like-this)
+        :init
+        (progn
+          (global-set-key (kbd "C->") 'mc/mark-next-like-this)
+          (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+          (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)))
+    #+END_SRC
 *** Helm
     Helm is, in my opinion, the best minibuffer completion thing.
     Let's stick it just about everywhere.
@@ -219,10 +231,11 @@ are available based on what you've already pressed.
     helm-descbinds is pretty great.  =C-h b= brings up a helm-powered
     list of available bindings in the current mode.
     #+begin_src emacs-lisp
-    (use-package helm-descbinds
-    :ensure helm-descbinds
-    :config
-      (helm-descbinds-mode))
+      (use-package helm-descbinds
+        :ensure helm-descbinds
+        :commands helm-descbinds
+        :config
+        (helm-descbinds-mode))
     #+end_src
 *** Backups
 
@@ -289,8 +302,13 @@ this out eventually.
         :diminish undo-tree-mode
         :init
         (progn
-          (global-undo-tree-mode)))
+          (global-undo-tree-mode)
+          (setq undo-tree-auto-save-history t)))
     #+end_src
+*** Delete Selection
+    #+BEGIN_SRC emacs-lisp
+      (delete-selection-mode 1)
+    #+END_SRC
 *** Window management
 **** Window splitting
      Stole these from
@@ -423,6 +441,71 @@ this out eventually.
       (setq org-use-speed-commands t)
     #+END_SRC
 
+*** Blog
+    Let's try to set up org-jekyll
+    #+BEGIN_SRC emacs-lisp
+      (use-package org-jekyll
+        :ensure org-jekyll)
+    #+END_SRC
+    #+BEGIN_SRC emacs-lisp
+      (setq org-publish-mcw "~/code/mike-blog/publish")
+      (setq org-publish-mcw-blog "~/code/mike-blog/org")
+
+      (setq org-publish-project-alist
+                   `("mcw-org"
+                     :base-directory "~/code/mike-blog/org"
+                     :recursive t
+                     :base-extension "org"
+                     :publishing-directory ,org-publish-mcw
+                     :exclude "^blog"
+                     :jekyll-sanitize-permalinks t
+                     :publishing-function org-html-publish-to-html
+                     :section-numbers nil
+                     :headline-levels 4
+                     :table-of-contents t
+                     :auto-index nil
+                     :auto-preamble nil
+                     :body-only nil
+                     :auto-postamble nil))
+
+      (add-to-list 'org-publish-project-alist
+                   `("mcw-img"
+                     :base-directory "~/code/mike-blog/org"
+                     :recursive t
+                     :exclude "^publish"
+                     :base-extension "jpg\\|gif\\|png"
+                     :publishing-directory ,org-publish-mcw
+                     :publishing-function org-html-publish-attachment))
+
+      (add-to-list 'org-publish-project-alist
+                   '("mcw" :components ("mcw-org" "mcw-img")))
+
+      (add-to-list 'org-publish-project-alist
+                   '("mcw-blog"
+                     :base-directory "~/code/mike-blog/org"
+                     :recursive t
+                     :base-extension "org"
+                     :publishing-directory ,org-publish-mcw
+                     :blog-publishing-directory ,org-publish-mcw-blog
+                     :jekyll-sanitize-permalinks t
+                     :publishing-function org-html-publish-to-html
+                     :section-numbers nil
+                     :headline-levels 4
+                     :table-of-contents nil
+                     :auto-index nil
+                     :auto-preamble nil
+                     :body-only t
+                     :auto-postamble nil))
+    #+END_SRC
+*** org-page
+    #+BEGIN_SRC emacs-lisp
+      (use-package org-page
+        :ensure org-page
+        :config
+        (progn
+          (setq op/site-domain "file:///Users/mwestbom/code/org-blog/blog")
+          (setq op/repository-directory "~/code/org-blog")))
+    #+END_SRC
 *** Publishing
 **** Section numbers
      Don't bother adding section numbers.
@@ -581,6 +664,7 @@ this out eventually.
         :mode ("\\.hbs\\'" . web-mode)
         :init
         (progn
+          (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
           (add-hook 'web-mode-hook 'mcw/web-mode-hook)))
     #+END_SRC
 *** Clojure
@@ -609,6 +693,7 @@ this out eventually.
           :commands enh-ruby-mode
           :init
           (progn
+            (setq enh-ruby-bounce-deep-indent t)
             (add-to-list 'auto-mode-alist '("\\.rb$" . enh-ruby-mode))
             (add-to-list 'interpreter-mode-alist '("ruby" . enh-ruby-mode))))
       #+END_SRC
