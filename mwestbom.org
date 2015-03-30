@@ -268,7 +268,6 @@ this out eventually.
     #+begin_src emacs-lisp
       (use-package smart-mode-line
         :ensure smart-mode-line
-        :pre-init
         :init
         (progn
           (use-package smart-mode-line-powerline-theme
@@ -606,7 +605,7 @@ this out eventually.
     #+BEGIN_SRC emacs-lisp
       (use-package yasnippet
         :ensure yasnippet
-        :init
+        :config
         (progn
           (add-to-list 'yas-snippet-dirs "~/.emacs.d/site-lisp/yasnippet-snippets")
           (yas-global-mode 1)))
