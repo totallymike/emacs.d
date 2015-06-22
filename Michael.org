@@ -1,0 +1,196 @@
+#+TITLE: Michael Westbom's Emacs configuration
+#+OPTIONS: toc:4 h:4
+
+* Configuration
+** About this file
+<<babel-init>>
+
+Inspired by http://pages.sachachua.com/.emacs.d/Sacha.html
+
+** Personal Information
+
+#+BEGIN_SRC emacs-lisp
+  (setq user-full-name "Michael Westbom"
+        user-mail-address "michael@agilion.com")
+#+END_SRC
+
+** Emacs Initialization
+*** Add package sources
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+  (unless (assoc-default "melpa" package-archives)
+    (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+    (package-refresh-contents))
+#+END_SRC
+
+Use =M-x package-refresh-contents to reload the list of packages
+after adding these for the first time.
+
+*** Add my elisp directory and other files
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'load-path "~/.emacs.d/elisp")
+  (unless (package-installed-p 'use-package)
+    (package-install 'use-package))
+  (unless (package-installed-p 'req-package)
+    (package-install 'req-package))
+  (setq use-package-verbose t)
+  (setq req-package-log-level 'debug)
+  (require 'req-package)
+  (req-package auto-compile
+               :ensure t
+               :config
+               (auto-compile-on-load-mode 1))
+  (setq load-prefer-newer t)
+#+END_SRC
+
+** General configuration
+
+Mostly just random bits and pieces that are universal
+
+*** Font size
+
+#+BEGIN_SRC emacs-lisp
+  (set-face-attribute 'default nil :height 180)
+#+END_SRC
+
+*** No more tabs please
+
+#+BEGIN_SRC emacs-lisp
+  (setq-default indent-tabs-mode nil)
+#+END_SRC
+
+*** Indentation level
+
+Set a standard indentation level to be used elsewhere
+
+#+BEGIN_SRC emacs-lisp
+  (setq tab-width 2)
+#+END_SRC
+
+*** Backups
+Stash all backups somewhere quiet.
+
+#+BEGIN_SRC emacs-lisp
+  (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
+#+END_SRC
+
+*** History
+#+BEGIN_SRC emacs-lisp
+  (setq savehist-file "~/.emacs.d/savehist")
+  (savehist-mode 1)
+  (setq history-length t)
+  (setq history-delete-duplicates t)
+  (setq savehist-save-minibufer-history 1)
+  (setq savehist-additional-variables
+        '(kill-ring
+          search-ring
+          regexp-search-ring))
+#+END_SRC
+*** Window configuration
+#+BEGIN_SRC emacs-lisp
+  (when window-system
+    (tooltip-mode -1)
+    (tool-bar-mode -1)
+    (menu-bar-mode -1)
+    (scroll-bar-mode -1))
+#+END_SRC
+*** Winner mode
+Help with changing layouts (undo and so on)
+
+#+BEGIN_SRC emacs-lisp
+  (req-package winner
+    :defer t
+    :config (winner-mode 1))
+#+END_SRC
+*** Helm mode
+
+This is probably the most important thing ever.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package helm
+    :diminish helm-mode
+    :init
+    (progn
+      (require 'helm-config)
+      (setq helm-idle-delay 0.0 ; make fast updates
+            helm-input-idle-delay 0.01
+            helm-yas-display-key-on-candidate t
+            helm-quick-update t
+            helm-M-x-requires-pattern nil
+            helm-ff-skip-boring-files t)
+      (helm-mode))
+    :bind (("C-c h" . helm-mini)
+           ("C-h a" . helm-apropos)
+           ("C-x C-b" . helm-buffers-list)
+           ("C-x b" . helm-buffers-list)
+           ("M-y" . helm-show-kill-ring)
+           ("M-x" . helm-M-x)
+           ("C-x c o" . helm-occur)
+           ("C-x c s" . helm-swoop)
+           ("C-x c y" . helm-yas-complete)
+           ("C-x c Y" . helm-yas-create-snippet-on-region)
+           ("C-x c SPC" . helm-all-mark-rings)))
+  (ido-mode -1)
+#+END_SRC
+
+Also use helm-descbinds for key-binding discovery
+
+#+BEGIN_SRC emacs-lisp
+  (req-package helm-descbinds
+    :require helm
+    :defer t
+    :bind (("C-h b" . helm-descbinds)
+           ("C-h w" . helm-descbinds)))
+#+END_SRC
+
+*** Change "yes or no" to "y or n"
+
+#+BEGIN_SRC emacs-lisp
+  (fset 'yes-or-no-p 'y-or-n-p)
+#+END_SRC
+
+*** Color theme
+
+#+BEGIN_SRC emacs-lisp
+  (req-package base16-theme
+    :init
+    (load-theme 'base16-default-dark t))
+#+END_SRC
+
+*** Magit
+
+#+BEGIN_SRC emacs-lisp
+  (use-package magit
+    :load-path "~/.emacs.d/site-lisp/magit")
+#+END_SRC
+
+** Coding
+
+*** Emacs Lisp
+
+**** Eldoc
+
+#+BEGIN_SRC emacs-lisp
+  (req-package eldoc
+    :diminish eldoc-mode
+    :commands turn-on-eldoc-mode
+    :defer t
+    :init (progn
+            (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
+            (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
+            (add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)))
+#+END_SRC
+
+*** Autocompletion
+
+#+BEGIN_SRC emacs-lisp
+  (req-package company
+    :config
+    (add-hook 'prog-mode-hook 'company-mode))
+#+END_SRC
+
+** The end
+*** Finish package setup
+#+BEGIN_SRC emacs-lisp
+  (req-package-finish)
+#+END_SRC
