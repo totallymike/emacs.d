@@ -1,6 +1,8 @@
 Michael.el
+auto-save-list
+projectile*
 backups/
 savehist
 elpa/
-elisp/
 site-lisp/
+/elisp/org-mode/

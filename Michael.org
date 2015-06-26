@@ -59,12 +59,22 @@ Mostly just random bits and pieces that are universal
   (setq-default indent-tabs-mode nil)
 #+END_SRC
 
+*** Show whitespace
+#+BEGIN_SRC emacs-lisp
+  (setq-default whitespace-style '(face trailing lines-tail))
+  (global-whitespace-mode t)
+
+#+END_SRC
+*** Whitespace cleanup
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'before-save-hook 'whitespace-cleanup)
+#+END_SRC
 *** Indentation level
 
 Set a standard indentation level to be used elsewhere
 
 #+BEGIN_SRC emacs-lisp
-  (setq tab-width 2)
+  (setq-default tab-width 2)
 #+END_SRC
 
 *** Backups
@@ -157,15 +167,68 @@ Also use helm-descbinds for key-binding discovery
     (load-theme 'base16-default-dark t))
 #+END_SRC
 
+*** Line numbers
+#+BEGIN_SRC emacs-lisp
+  (require 'linum-off)
+  (global-linum-mode)
+#+END_SRC
 *** Magit
 
 #+BEGIN_SRC emacs-lisp
   (use-package magit
-    :load-path "~/.emacs.d/site-lisp/magit")
+    :load-path "~/.emacs.d/site-lisp/magit"
+    :bind (("C-x g" . magit-status))
+    :init
+    (setq magit-status-buffer-switch-function 'switch-to-buffer))
 #+END_SRC
 
+*** Projectile
+
+Add projectile for project management
+
+#+BEGIN_SRC emacs-lisp
+  (req-package projectile
+    :config
+    (progn
+      (setq projectile-keymap-prefix (kbd "C-c p")
+            projectile-completion-system 'default
+            projectile-enable-caching t)
+      (projectile-global-mode))
+    :bind (("C-c p p" . projectile-switch-project)))
+  (req-package helm-projectile
+    :require (projectile ag helm helm-ag)
+    :config
+    (progn
+      (setq projectile-completion-system 'helm)
+      (helm-projectile-on)))
+#+END_SRC
+
+*** Markdown
+#+BEGIN_SRC emacs-lisp
+  (req-package markdown-mode)
+#+END_SRC
 ** Coding
 
+*** General
+#+BEGIN_SRC emacs-lisp
+  (req-package smartparens
+    :config
+    (progn
+      (require 'smartparens-config)
+      (smartparens-global-mode)))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (req-package undo-tree)
+#+END_SRC
+*** Flycheck
+#+BEGIN_SRC emacs-lisp
+  (req-package flycheck
+    :init
+    (add-hook 'after-init-hook #'global-flycheck-mode)
+    :config
+    (delete 'emacs-lisp-checkdoc flycheck-checkers))
+#+END_SRC
 *** Emacs Lisp
 
 **** Eldoc
@@ -189,6 +252,86 @@ Also use helm-descbinds for key-binding discovery
     (add-hook 'prog-mode-hook 'company-mode))
 #+END_SRC
 
+*** Yaml
+#+BEGIN_SRC emacs-lisp
+  (req-package yaml-mode
+    :mode (("\\.yml\\'" . yaml-mode)
+           ("\\.yaml\\'" . yaml-mode)))
+#+END_SRC
+*** Javascript
+**** JS3-mode
+#+BEGIN_SRC emacs-lisp
+  (req-package js3-mode
+    :mode (("\\.js\\'" . js3-mode)
+           ("\\.json\\'" . js3-mode)))
+#+END_SRC
+*** Ruby
+**** Rbenv
+#+BEGIN_SRC emacs-lisp
+  (req-package rbenv
+    :config
+    (progn
+      (setq rbenv-show-active-ruby-in-modeline nil)
+      (rbenv-use-corresponding)))
+#+END_SRC
+
+**** enh-ruby-mode
+#+BEGIN_SRC emacs-lisp
+    (req-package enh-ruby-mode
+      :require 'rspec-mode
+      :mode "\\.rb\\'"
+      :interpreter "ruby"
+      :init
+      (setq enh-ruby-bounce-deep-indent t))
+#+END_SRC
+
+**** rspec-mode
+#+BEGIN_SRC emacs-lisp
+  (req-package rspec-mode
+    :require 'inf-ruby
+    :init
+    (add-hook 'after-init-hook 'inf-ruby-switch-setup)
+    :config
+    (setq compilation-scroll-output t))
+#+END_SRC
+**** ruby-guard
+#+BEGIN_SRC emacs-lisp
+  (req-package ruby-guard)
+#+END_SRC
+*** Elixir
+Add Elixir mode
+
+#+BEGIN_SRC emacs-lisp
+  (req-package elixir-mode)
+#+END_SRC
+
+And Alchemist, a mix environment for Emacs
+
+#+BEGIN_SRC emacs-lisp
+  (req-package alchemist
+    :require elixir-mode)
+#+END_SRC
+*** Golang
+**** Go mode
+#+BEGIN_SRC emacs-lisp
+    (req-package go-mode
+      :mode "\\.go\\'")
+#+END_SRC
+**** Go eldoc
+#+BEGIN_SRC emacs-lisp
+  (req-package go-eldoc
+    :init
+    (add-hook 'go-mode-hook 'go-eldoc-setup))
+#+END_SRC
+**** Company-go
+#+BEGIN_SRC emacs-lisp
+  (req-package company-go
+    :require company
+    :init
+    (add-hook 'go-mode-hook (lambda ()
+                              (set (make-local-variable 'company-backends) '(company-go))
+                              (company-mode))))
+#+END_SRC
 ** The end
 *** Finish package setup
 #+BEGIN_SRC emacs-lisp
