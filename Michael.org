@@ -69,6 +69,14 @@ Mostly just random bits and pieces that are universal
 #+BEGIN_SRC emacs-lisp
   (add-hook 'before-save-hook 'whitespace-cleanup)
 #+END_SRC
+*** Keybindings for macos
+#+BEGIN_SRC emacs-lisp
+  (if (eq system-type 'darwin)
+      (progn
+        (setq mac-command-modifier 'super
+              mac-option-modifier 'meta)))
+
+#+END_SRC
 *** Indentation level
 
 Set a standard indentation level to be used elsewhere
