@@ -181,10 +181,19 @@ Enable guide-key to show available bindings
 #+END_SRC
 
 *** Line numbers
+
 #+BEGIN_SRC emacs-lisp
   (require 'linum-off)
   (global-linum-mode)
 #+END_SRC
+
+*** Scrolling
+#+BEGIN_SRC emacs-lisp
+  (setq-default
+   scroll-preserve-screen-position t
+   scroll-error-top-bottom t)
+#+END_SRC
+
 *** Magit
 
 #+BEGIN_SRC emacs-lisp
