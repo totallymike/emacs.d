@@ -153,6 +153,19 @@ Also use helm-descbinds for key-binding discovery
            ("C-h w" . helm-descbinds)))
 #+END_SRC
 
+*** Guide key
+Enable guide-key to show available bindings
+#+BEGIN_SRC emacs-lisp
+  (req-package guide-key
+    :diminish guide-key-mode
+    :init
+    (progn
+      (setq guide-key/guide-key-sequence '("C-c" "C-h")
+            guide-key/recursive-key-sequence-flag t))
+    :config
+    (progn
+      (guide-key-mode 1)))
+#+END_SRC
 *** Change "yes or no" to "y or n"
 
 #+BEGIN_SRC emacs-lisp
