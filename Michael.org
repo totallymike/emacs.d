@@ -229,6 +229,10 @@ Add projectile for project management
 #+BEGIN_SRC emacs-lisp
   (req-package markdown-mode)
 #+END_SRC
+** Org
+#+BEGIN_SRC emacs-lisp
+  (setq org-startup-folded nil)
+#+END_SRC
 ** Coding
 
 *** General
