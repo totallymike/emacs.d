@@ -251,6 +251,29 @@ Visualize the undo tree.  The most useful.
 #+BEGIN_SRC emacs-lisp
   (req-package undo-tree)
 #+END_SRC
+
+**** Yasnippet
+A bunch of snippets.  I need to be better at this.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package yasnippet
+    :config
+    (progn
+      (add-to-list 'yas/root-directory "~/.emacs.d/site-lisp/yasnippet-snippets")
+      (yas/initialize)))
+#+END_SRC
+**** Multiple cursors
+#+BEGIN_SRC emacs-lisp
+  (req-package multiple-cursors
+    :bind
+    (("C-c m t" . mc/mark-all-like-this)
+     ("C-c m m" . mc/mark-all-like-this-dwim)
+     ("C-c m l" . mc/edit-lines)
+     ("C-c m e" . mc/edit-ends-of-lines)
+     ("C-c m a" . mc/edit-beginnings-of-lines)
+     ("C-c m n" . mc/mark-next-like-this)
+     ("C-c m p" . mc/mark-previous-like-this)))
+#+END_SRC
 *** Flycheck
 #+BEGIN_SRC emacs-lisp
   (req-package flycheck
@@ -282,6 +305,11 @@ Visualize the undo tree.  The most useful.
     (add-hook 'prog-mode-hook 'company-mode))
 #+END_SRC
 
+*** Docker
+
+#+BEGIN_SRC emacs-lisp
+  (req-package dockerfile-mode)
+#+END_SRC
 *** Yaml
 #+BEGIN_SRC emacs-lisp
   (req-package yaml-mode
