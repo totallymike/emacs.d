@@ -206,7 +206,7 @@ Enable guide-key to show available bindings
 
 #+BEGIN_SRC emacs-lisp
   (use-package magit
-    :load-path "~/.emacs.d/site-lisp/magit"
+    :load-path "~/.emacs.d/site-lisp/magit/lisp"
     :bind (("C-x g" . magit-status))
     :init
     (setq magit-status-buffer-switch-function 'switch-to-buffer))
