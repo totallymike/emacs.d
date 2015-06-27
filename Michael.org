@@ -257,7 +257,10 @@ Auto-close pairs it knows about.
 **** Undo-tree
 Visualize the undo tree.  The most useful.
 #+BEGIN_SRC emacs-lisp
-  (req-package undo-tree)
+  (req-package undo-tree
+    :config
+    (progn
+      (global-undo-tree-mode)))
 #+END_SRC
 
 **** Yasnippet
