@@ -357,9 +357,12 @@ A bunch of snippets.  I need to be better at this.
 *** Javascript
 **** JS3-mode
 #+BEGIN_SRC emacs-lisp
-  (req-package js3-mode
-    :mode (("\\.js\\'" . js3-mode)
-           ("\\.json\\'" . js3-mode)))
+  (req-package js2-mode
+    :mode (("\\.js\\'" . js2-mode)
+           ("\\.json\\'" . js2-mode))
+    :config
+    (progn
+      (setq-default js2-basic-offset 2)))
 #+END_SRC
 *** Ruby
 **** Rbenv
