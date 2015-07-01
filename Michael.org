@@ -329,6 +329,31 @@ A bunch of snippets.  I need to be better at this.
     :mode (("\\.yml\\'" . yaml-mode)
            ("\\.yaml\\'" . yaml-mode)))
 #+END_SRC
+*** Web-mode
+#+BEGIN_SRC emacs-lisp
+  (defun mcw/web-mode-hook ()
+    (setq web-mode-enable-auto-pairing nil))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (req-package web-mode
+    :mode (("\\.html?\\'" . web-mode)
+           ("\\.jsx\\'" . web-mode)
+           ("\\.hbs\\'" . web-mode))
+    :config
+    (progn
+      (setq web-mode-enable-current-element-highlight t)
+      (setq-default web-mode-markup-indent-offset 2)))
+#+END_SRC
+*** CSS/Less
+#+BEGIN_SRC emacs-lisp
+  (setq-default css-indent-offset 2)
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (req-package less-css-mode
+    :config
+    (setq-default flycheck-disabled-checkers '(less)))
+#+END_SRC
 *** Javascript
 **** JS3-mode
 #+BEGIN_SRC emacs-lisp
