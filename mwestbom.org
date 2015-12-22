@@ -1,0 +1,347 @@
+#+TITLE: Emacs Init Stuffs
+#+OPTIONS: toc:4 h:4
+
+* Intro
+
+This here is my configuration.  It's not very pretty, but I felt like starting a new one.
+This is built on a preview build of Emacs 25 and I'm hoping to explore more of its functionality.
+
+* Basics
+** Required libraries
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package dash
+       :ensure t)
+   #+END_SRC
+
+** Personal Information
+
+   #+BEGIN_SRC emacs-lisp
+     (setq user-full-name "Michael Westbom"
+           user-mail-address "michael@agilion.com")
+   #+END_SRC
+
+** Backup and history stuff
+
+   Keep a record of the init dir
+
+   #+BEGIN_SRC emacs-lisp
+     (defvar mw-dir (file-name-directory load-file-name)
+       "The root dir of the installation")
+   #+END_SRC
+
+   Store all backup stuff in the tmp dir
+
+   #+BEGIN_SRC emacs-lisp
+     (setq backup-directory-alist
+           `((".*" . ,temporary-file-directory)))
+
+     (setq auto-save-file-name-transforms
+           `((".*" ,temporary-file-directory t)))
+   #+END_SRC
+
+   Add a directory to keep all the temp and history stuff
+
+   #+BEGIN_SRC emacs-lisp
+     (defvar mw-savefile-dir (expand-file-name "savefile" mw-dir)
+       "This folder stores all the automatically generated save/history files.")
+
+     (unless (file-exists-p mw-savefile-dir)
+       (make-directory mw-savefile-dir))
+   #+END_SRC
+
+   saveplace remembers your location in a file when saving files
+
+   #+BEGIN_SRC emacs-lisp
+     (require 'saveplace)
+     (setq save-place-file (expand-file-name "saveplace" mw-savefile-dir))
+     (setq-default save-place t)
+   #+END_SRC
+
+   savehist keeps track of some history
+
+   #+BEGIN_SRC emacs-lisp
+     (require 'savehist)
+     (setq savehist-additional-variables
+           ;; Search entries
+           '(search-ring regexp-search-ring)
+           ;; save every minute
+           savehist-autosave-interval 60
+           ;; Keep in proper place
+           savehist-file (expand-file-name "savehist" mw-savefile-dir))
+     (savehist-mode +1)
+   #+END_SRC
+
+   Save recent files
+
+   #+BEGIN_SRC emacs-lisp
+     (require 'recentf)
+
+     (setq recentf-save-file (expand-file-name "recentf" mw-savefile-dir)
+           recentf-max-saved-items 500
+           recentf-max-menu-items 15
+           ;; Disable recentf-cleanup on Emacs start, because it can
+           ;; cause problems with remote files
+           recentf-auto-cleanup 'never)
+
+     (defun mw-recentf-exclude-p (file)
+       "A predicate to decide whether to exclude FILE from recentf."
+       (let ((file-dir (file-truename (file-name-directory file))))
+         (-any? (lambda (dir)
+                  (string-prefix-p dir file-dir))
+                (mapcar 'file-truename (list mw-savefile-dir package-user-dir)))))
+
+     (add-to-list 'recentf-exclude 'mw-recentf-exclude-p)
+
+     (recentf-mode +1)
+   #+END_SRC
+
+** Change "yes or no" to "y or n"
+   Because of who wants to type that crap?
+
+   #+BEGIN_SRC emacs-lisp
+     (fset 'yes-or-no-p 'y-or-n-p)
+   #+END_SRC
+
+** Smart tab behavior
+
+   #+BEGIN_SRC emacs-lisp
+     (setq tab-always-indent 'complete)
+   #+END_SRC
+
+** Move to beginning of line
+   Stole from prelude
+
+   #+BEGIN_SRC emacs-lisp
+     (defun mw/smarter-move-beginning-of-line (arg)
+       "Move point to indentation of beginning of line.
+
+     Move to first non-whitespace character on the line.
+     Then toggle between that and beginning of line"
+       (interactive "^p")
+       (setq arg (or arg 1))
+
+       ;; Move lines first
+       (when (/= arg 1)
+         (let ((line-move-visual nil))
+           (forward-line (1- arg))))
+
+       (let ((orig-point (point)))
+         (back-to-indentation)
+         (when (= orig-point (point))
+           (move-beginning-of-line 1))))
+
+     (global-set-key [remap move-beginning-of-line]
+                     'mw/smarter-move-beginning-of-line)
+   #+END_SRC
+
+** Package infrastructure
+
+   #+BEGIN_SRC emacs-lisp
+     (unless (assoc-default "melpa" package-archives)
+       (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t))
+   #+END_SRC
+
+   Set priorities of package archives so =package-install= goes to the right place
+   #+BEGIN_SRC emacs-lisp
+     (setq package-archive-priorities '(("org" . 10)
+                                        ("melpa" . 5)))
+   #+END_SRC
+
+
+   #+BEGIN_SRC emacs-lisp
+     (unless (package-installed-p 'use-package)
+       (package-install 'use-package))
+     (setq use-package-verbose t)
+     (require 'use-package)
+   #+END_SRC
+
+** Window configuration
+   Most of this extra GUI stuff gets in the way, if you ask me.
+   I don't know about tooltip-mode, so I'm leaving it until it
+   bothers me
+
+   #+BEGIN_SRC emacs-lisp
+     (when window-system
+       (tool-bar-mode -1)
+       ; (tooltip-mode -1)
+       (menu-bar-mode -1)
+       (scroll-bar-mode -1))
+   #+END_SRC
+
+** Uniquify buffer names
+
+   #+BEGIN_SRC emacs-lisp
+     (require 'uniquify)
+     (setq uniquify-buffer-name-style 'forward)
+     (setq uniquify-separator "/")
+
+     ; rename after killing uniquified
+     (setq uniquify-after-kill-buffer-p t)
+
+     ; Don't muck with special buffers
+     (setq uniquify-ignore-buffers-re "^\\*")
+   #+END_SRC
+
+** Winner mode - undo and redo window configuration
+   =winner-mode= lets you use =C-c <left>= and =C-c <right>= to switch between window
+   configurations.  This is pretty nice when popups and things happen and you just want
+   your windows back.
+
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package winner
+                  :ensure t
+                  :defer t)
+   #+END_SRC
+
+** Ace Window
+   Better moving around windows, I think.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package ace-window
+       :ensure t
+       :bind ("M-p" . ace-window))
+   #+END_SRC
+
+** Column number
+	 Need to know line widths!
+
+	 #+BEGIN_SRC emacs-lisp
+     (column-number-mode 1)
+	 #+END_SRC
+
+* Editing
+** Whitespace
+
+   #+BEGIN_SRC emacs-lisp
+     (require 'whitespace)
+     (setq whitespace-line-column 80)
+     (setq whitespace-style '(face tabs empty trailing lines-trail))
+     (whitespace-mode +1)
+
+     (add-hook 'before-save-hook 'whitespace-cleanup)
+   #+END_SRC
+
+** Undo tree mode
+   undo-tree is amazing
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package undo-tree
+       :defer t
+       :ensure t
+       :diminish undo-tree-mode
+       :config
+       (progn
+         (global-undo-tree-mode +1)
+         (setq undo-tree-visualizer-timestamps t
+               undo-tree-visualizer-diff t)))
+   #+END_SRC
+
+** Tab width should always be 2
+   #+BEGIN_SRC emacs-lisp
+     (setq-default tab-width 2)
+   #+END_SRC
+
+** Smartparens
+	 Smartparens enforces pairs and has lots of useful navigation stuff
+
+	 #+BEGIN_SRC emacs-lisp
+     (use-package smartparens
+       :ensure t
+       :config
+       (progn
+         (smartparens-global-mode 1)
+         (smartparens-global-strict-mode 1)
+         (show-smartparens-global-mode 1)))
+	 #+END_SRC
+
+* Now some fun stuff
+** Helm
+
+   Helm is fantastic minibuffer completion.  I love it for everything.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package helm
+       :ensure t
+       :diminish helm-mode
+       :init
+       (progn
+         (require 'helm-config)
+         (setq helm-candidate-number-limit 100
+               helm-idle-delay 0.0
+               helm-input-idle-delay 0.01
+               helm-yas-display-key-on-canditate t
+               helm-quick-update t
+               helm-M-x-requires-pattern nil
+               helm-ff-skip-boring-files t)
+         (helm-mode))
+       :bind (("C-c h" . helm-mini)
+              ("C-h a" . helm-apropos)
+              ("C-x C-b" . helm-buffers-list)
+              ("C-x b" . helm-buffers-list)
+              ("M-y" . helm-show-kill-ring)
+              ("M-x" . helm-M-x)
+              ("C-x c o" . helm-occur)))
+     (ido-mode -1)
+   #+END_SRC
+
+   =helm-descbinds= is an interactive way to navigate available keybindings.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package helm-descbinds
+       :defer t
+       :ensure t
+       :bind (("C-h b" . helm-descbinds)
+              ("C-h w" . helm-descbinds)))
+   #+END_SRC
+
+** which-key
+   Gives you a popup to help remember available keybindings
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package which-key
+       :ensure t
+       :config
+       (which-key-mode))
+   #+END_SRC
+
+** Some Org-related stuff
+
+	 In an attempt to make the rest of this file tolerable to edit
+
+	 #+BEGIN_SRC emacs-lisp
+     (defun org-insert-src-block (src-code-type)
+       "Insert a `SRC-CODE-TYPE' type source code block in org-mode"
+       (interactive
+        (let ((src-code-types
+               '("emacs-lisp" "python" "C" "sh" "java" "js" "clojure" "C++" "css"
+                 "calc" "asymptote" "dot" "gnuplot" "ledger" "lilypond" "mscgen"
+                 "octave" "oz" "plantuml" "R" "sass" "screen" "sql" "awk" "ditaa"
+                 "haskell" "latex" "lisp" "matlab" "ocaml" "org" "perl" "ruby"
+                 "scheme" "sqlite")))
+          (list (ido-completing-read "Source code type: " src-code-types))))
+       (progn
+         (newline-and-indent)
+         (insert (format "#+BEGIN_SRC %s\n" src-code-type))
+         (newline-and-indent)
+         (insert "#+END_SRC\n")
+         (previous-line 2)
+         (org-edit-src-code)))
+	 #+END_SRC
+
+	 And now bind it to a key for ease of use
+
+	 #+BEGIN_SRC emacs-lisp
+     (add-hook 'org-mode-hook '(lambda ()
+                                 (local-set-key (kbd "C-c s i")
+                                                'org-insert-src-block)))
+	 #+END_SRC
+** Magit
+	 Magit is amazing.  That's all.
+
+	 #+BEGIN_SRC emacs-lisp
+     (use-package magit
+       :ensure t
+       :bind ("C-x g" . magit-status))
+	 #+END_SRC
