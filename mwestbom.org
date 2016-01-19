@@ -7,28 +7,48 @@ This here is my configuration.  It's not very pretty, but I felt like starting a
 This is built on a preview build of Emacs 25 and I'm hoping to explore more of its functionality.
 
 * Basics
-** Required libraries
+** Some basic setup
+*** Package infrastructure
 
+		Add repo for org-mode to get more recent version
+		#+BEGIN_SRC emacs-lisp
+      (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+		#+END_SRC
+
+		#+BEGIN_SRC emacs-lisp
+     (unless (assoc-default "melpa" package-archives)
+       (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t))
+		#+END_SRC
+
+		Set priorities of package archives so =package-install= goes to the right place
+		#+BEGIN_SRC emacs-lisp
+     (setq package-archive-priorities '(("org" . 10)
+                                        ("melpa" . 5)))
+		#+END_SRC
+
+
+   #+BEGIN_SRC emacs-lisp
+     (unless (package-installed-p 'use-package)
+       (package-install 'use-package))
+     (setq use-package-verbose t)
+     (require 'use-package)
+     (use-package auto-compile
+       :ensure t
+       :config (auto-compile-on-load-mode))
+   #+END_SRC
+
+*** Required libraries
    #+BEGIN_SRC emacs-lisp
      (use-package dash
        :ensure t)
    #+END_SRC
+*** Add custom load-path for little libraries
 
-** Personal Information
+		#+BEGIN_SRC emacs-lisp
+      (add-to-list 'load-path "~/.emacs.d/elisp")
+		#+END_SRC
 
-   #+BEGIN_SRC emacs-lisp
-     (setq user-full-name "Michael Westbom"
-           user-mail-address "michael@agilion.com")
-   #+END_SRC
-
-** Backup and history stuff
-
-   Keep a record of the init dir
-
-   #+BEGIN_SRC emacs-lisp
-     (defvar mw-dir (file-name-directory load-file-name)
-       "The root dir of the installation")
-   #+END_SRC
+*** Backup and history stuff
 
    Store all backup stuff in the tmp dir
 
@@ -95,12 +115,23 @@ This is built on a preview build of Emacs 25 and I'm hoping to explore more of i
 
      (recentf-mode +1)
    #+END_SRC
-
-** Change "yes or no" to "y or n"
+*** Change "yes or no" to "y or n"
    Because of who wants to type that crap?
 
    #+BEGIN_SRC emacs-lisp
      (fset 'yes-or-no-p 'y-or-n-p)
+   #+END_SRC
+
+*** Custom file
+		#+BEGIN_SRC emacs-lisp
+
+		#+END_SRC
+
+** Personal Information
+
+   #+BEGIN_SRC emacs-lisp
+     (setq user-full-name "Michael Westbom"
+           user-mail-address "michael@agilion.com")
    #+END_SRC
 
 ** Smart tab behavior
@@ -133,27 +164,6 @@ This is built on a preview build of Emacs 25 and I'm hoping to explore more of i
 
      (global-set-key [remap move-beginning-of-line]
                      'mw/smarter-move-beginning-of-line)
-   #+END_SRC
-
-** Package infrastructure
-
-   #+BEGIN_SRC emacs-lisp
-     (unless (assoc-default "melpa" package-archives)
-       (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t))
-   #+END_SRC
-
-   Set priorities of package archives so =package-install= goes to the right place
-   #+BEGIN_SRC emacs-lisp
-     (setq package-archive-priorities '(("org" . 10)
-                                        ("melpa" . 5)))
-   #+END_SRC
-
-
-   #+BEGIN_SRC emacs-lisp
-     (unless (package-installed-p 'use-package)
-       (package-install 'use-package))
-     (setq use-package-verbose t)
-     (require 'use-package)
    #+END_SRC
 
 ** Window configuration
@@ -204,12 +214,272 @@ This is built on a preview build of Emacs 25 and I'm hoping to explore more of i
        :bind ("M-p" . ace-window))
    #+END_SRC
 
+* UI Stuff
+** Cursor blinking should not be
+	 #+BEGIN_SRC emacs-lisp
+     (blink-cursor-mode -1)
+	 #+END_SRC
+** Fancy linum mode
+
+	 #+BEGIN_SRC emacs-lisp
+     ;;; linum-off.el --- Provides an interface for turning line-numbering off
+     ;;
+     ;; Filename: linum-off.el
+     ;; Description:
+     ;; Author: Matthew L. Fidler, Florian Adamsky (see wiki)
+     ;; Maintainer: Matthew L. Fidler
+     ;; Created: Mon Sep 20 08:50:07 2010 (-0500)
+     ;; Version: 0.1
+     ;; Last-Updated: Tue Feb  8 10:41:27 2011 (-0600)
+     ;;           By: Matthew L. Fidler
+     ;;     Update #: 42
+     ;; URL:  http://www.emacswiki.org/emacs/auto-indent-mode.el
+     ;; Keywords: Line Numbering
+     ;; Compatibility: Unknown.
+     ;;
+     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+     ;;
+     ;;; Commentary:
+     ;;
+     ;; Put this in your load path and then:
+     ;; (require 'linum-off)
+     ;;
+     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+     ;;
+     ;;; Change log:
+     ;; 29-Sep-2010    Matthew L. Fidler
+     ;;    Last-Updated: Wed Sep 29 09:35:10 2010 (-0500) #39 (Matthew L. Fidler)
+     ;;    Added Dired mode
+     ;; 20-Sep-2010    Matthew L. Fidler
+     ;;    Last-Updated: Mon Sep 20 09:29:06 2010 (-0500) #37 (Matthew L. Fidler)
+     ;;    Took out starred buffers.
+     ;; 20-Sep-2010    Matthew L. Fidler
+     ;;    Last-Updated: Mon Sep 20 09:24:49 2010 (-0500) #34 (Matthew L. Fidler)
+     ;;    Changed advice to function change.  Couldn't get advice to work.
+     ;; 20-Sep-2010    Matthew L. Fidler
+     ;;    Last-Updated: Mon Sep 20 09:11:13 2010 (-0500) #14 (Matthew L. Fidler)
+     ;;    Added provide and some explanation of how to use.
+     ;;
+     ;;
+     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+     ;;
+     ;; This program is free software; you can redistribute it and/or
+     ;; modify it under the terms of the GNU General Public License as
+     ;; published by the Free Software Foundation; either version 3, or
+     ;; (at your option) any later version.
+     ;;
+     ;; This program is distributed in the hope that it will be useful,
+     ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+     ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+     ;; General Public License for more details.
+     ;;
+     ;; You should have received a copy of the GNU General Public License
+     ;; along with this program; see the file COPYING.  If not, write to
+     ;; the Free Software Foundation, Inc., 51 Franklin Street, Fifth
+     ;; Floor, Boston, MA 02110-1301, USA.
+     ;;
+     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+     ;;
+     ;;; Code:
+     (require 'linum)
+
+     (defcustom linum-disabled-modes-list '(eshell-mode wl-summary-mode compilation-mode org-mode text-mode dired-mode doc-view-mode image-mode)
+       "* List of modes disabled when global linum mode is on"
+       :type '(repeat (sexp :tag "Major mode"))
+       :tag " Major modes where linum is disabled: "
+       :group 'linum
+       )
+     (defcustom linum-disable-starred-buffers 't
+       "* Disable buffers that have stars in them like *Gnu Emacs*"
+       :type 'boolean
+       :group 'linum)
+
+     (defun linum-on ()
+       "* When linum is running globally, disable line number in modes defined in `linum-disabled-modes-list'. Changed by linum-off. Also turns off numbering in starred modes like *scratch*"
+
+       (unless (or (minibufferp)
+                   (member major-mode linum-disabled-modes-list)
+                   (string-match "*" (buffer-name))
+                   (> (buffer-size) 3000000)) ;; disable linum on buffer greater than 3MB, otherwise it's unbearably slow
+         (linum-mode 1)))
+
+     (provide 'linum-off)
+
+     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+     ;;; linum-off.el ends here
+
+
+     (global-linum-mode)
+	 #+END_SRC
+
+** Line Number
+	 #+BEGIN_SRC emacs-lisp
+     (line-number-mode t)
+	 #+END_SRC
 ** Column number
 	 Need to know line widths!
 
 	 #+BEGIN_SRC emacs-lisp
      (column-number-mode 1)
 	 #+END_SRC
+
+** File size
+	 #+BEGIN_SRC emacs-lisp
+     (size-indication-mode t)
+	 #+END_SRC
+** Theme
+	 #+BEGIN_SRC emacs-lisp
+     (defun mcw/load-theme ()
+       (if (package-installed-p 'base16-theme)
+           (load-theme 'base16-eighties-dark t)
+         (progn
+           (package-install 'base16-theme)
+           (mcw/load-theme))))
+     (mcw/load-theme)
+	 #+END_SRC
+** Smart modeline
+	 #+BEGIN_SRC emacs-lisp
+     (use-package smart-mode-line
+       :ensure t
+       :commands (sml/setup)
+       :init
+       (progn
+         (setq sml/no-confirm-load-theme t
+               sml/theme nil)
+         (add-hook 'after-init-hook #'sml/setup)))
+	 #+END_SRC
+
+** Beacon
+	 Beacon highlights the line when fancy stuff happens.  It's cool
+
+	 #+BEGIN_SRC emacs-lisp
+     (use-package beacon
+       :ensure t
+       :config
+       (beacon-mode +1))
+	 #+END_SRC
+
+* Email
+** Mu4e
+	 #+BEGIN_SRC emacs-lisp
+     (add-to-list 'load-path "/usr/local/Cellar/mu/0.9.15/share/emacs/site-lisp/mu/mu4e")
+
+     (require 'mu4e)
+     (setq mu4e-get-mail-command "/usr/local/bin/mbsync -a"
+           mu4e-update-interval 300
+           mu4e-sent-folder "/agilion/sent"
+           mu4e-drafts-folder "/agilion/drafts"
+           mu4e-trash-folder "/agilion/trash"
+           user-mail-address "michael@agilion.com"
+           mu4e-sent-messages-behavior 'delete)
+
+     (defvar my-mu4e-account-alist
+       '(("agilion"
+          (mu4e-sent-folder "/agilion/sent")
+          (mu4e-drafts-folder "/agilion/drafts")
+          (user-mail-address "michael@agilion.com"))
+         ("ello"
+          (mu4e-sent-folder "/ello/sent")
+          (mu4e-drafts-folder "/ello/drafts")
+          (user-mail-address "michael@ello.co"))))
+
+     (defun my-mu4e-set-account ()
+       "Set the account for composing a message."
+       (let* ((account
+               (if mu4e-compose-parent-message
+                   (let ((maildir (mu4e-message-field mu4e-compose-parent-message :maildir)))
+                     (string-match "/\\(.*?\\)/" maildir)
+                     (match-string 1 maildir))
+                 (completing-read (format "Compose with account: (%s) "
+                                          (mapconcat #'(lambda (var) (car var))
+                                                     my-mu4e-account-alist "/"))
+                                  (mapcar #'(lambda (var) (car var)) my-mu4e-account-alist)
+                                  nil t nil nil (caar my mu4e-account-alist))))
+              (account-vars (cdr (assoc account my-mu4e-account-alist))))
+         (if account-vars
+             (mapc #'(lambda (var)
+                       (set (car var) (cadr var)))
+                   account-vars)
+           (error "No email account found"))))
+
+     (add-hook 'mu4e-compose-pre-hook 'my-mu4e-set-account)
+     ;; (require 'mu4e)
+     ;; (require 'smtpmail)
+
+     ;; (setq
+     ;;  mu4e-get-mail-command "offlineimap"
+     ;;  mu4e-update-interval 300
+
+     ;;  ;; smtpmail
+     ;;  message-send-mail-function 'smtpmail-send-it
+     ;;  smtpmail-stream-type 'starttls
+     ;;  smtpmail-default-smtp-server "smtp.gmail.com"
+     ;;  smtpmail-smtp-server "smtp.gmail.com"
+     ;;  smtpmail-smtp-service 587
+     ;;  mu4e-view-show-images t
+     ;;  mu4e-headers-skip-duplicates t
+     ;;  mu4e-account-alist
+     ;;  '(("agilion"
+     ;;     (mu4e-sent-messages-behavior delete)
+     ;;     (mu4e-sent-folder "/Agilion/[Gmail].Sent Mail")
+     ;;     (mu4e-drafts-folder "/Agilion/[Gmail].Drafts")
+     ;;     (user-mail-address "michael@agilion.com")
+     ;;     (user-full-name "Michael Westbom"))
+     ;;    ("ello"
+     ;;     (mu4e-sent-messages-behavior delete)
+     ;;     (mu4e-sent-folder "/Ello/[Gmail].Sent Mail")
+     ;;     (mu4e-drafts-folder "/Ello/[Gmail].Drafts")
+     ;;     (user-mail-address "michael@ello.co")
+     ;;     (user-full-name "Michael Westbom"))
+     ;;    ("totallymike"
+     ;;     (mu4e-sent-messages-behavior delete)
+     ;;     (mu4e-sent-folder "/totallymike/[Gmail].Sent Mail")
+     ;;     (mu4e-drafts-folder "/totallymike/[Gmail].Drafts")
+     ;;     (user-mail-address "totallymike@gmail.com")
+     ;;     (user-full-name "Michael Westbom"))))
+
+     ;; (defun my-mu4e-set-account ()
+     ;;   "Set the account for composing a message."
+     ;;   (let* ((account
+     ;;           (if mu4e-compose-parent-message
+     ;;               (let ((maildir (mu4e-message-field mu4e-compose-parent-message :maildir)))
+     ;;                 (string-match "/\\(.*?\\)/" maildir)
+     ;;                 (match-string 1 maildir))
+     ;;             (completing-read (format "Compose with account: (%s) "
+     ;;                                      (mapconcat #'(lambda (var) (car var))
+     ;;                                                 mu4e-account-alist "/"))
+     ;;                              (mapcar #'(lambda (var) (car var)) mu4e-account-alist)
+     ;;                              nil t nil nil (car mu4e-account-alist))))
+     ;;          (account-vars (cdr (assoc account mu4e-account-alist))))
+     ;;     (if account-vars
+     ;;         (mapc #'(lambda (var)
+     ;;                   (set (car var) (cadr var)))
+     ;;               account-vars)
+     ;;       (error "No email account found"))))
+     ;; (add-hook 'mu4e-compose-pre-hook 'my-mu4e-set-account)
+	 #+END_SRC
+
+* Slack
+
+	#+BEGIN_SRC emacs-lisp
+    (use-package slack
+      :ensure t
+      :commands (slack-start)
+      :init
+      (setq slack-enable-emoji t
+            slack-room-subscription '(develop engineering friends)
+            slack-client-id "2869310102.18322627890"
+            slack-client-secret "34575a4df451e02dca6259186b6dcba0"
+            slack-token "xoxp-2869310102-17703101219-18323070070-8560b2f742"
+            slack-user-name "mwestbom"))
+    (use-package emojify
+      :ensure t)
+    (use-package alert
+      :ensure t
+      :commands (alert)
+      :init
+      (setq alert-default-style 'notifier))
+	#+END_SRC
 
 * Editing
 ** Whitespace
@@ -238,6 +508,13 @@ This is built on a preview build of Emacs 25 and I'm hoping to explore more of i
                undo-tree-visualizer-diff t)))
    #+END_SRC
 
+** Search
+
+	 #+BEGIN_SRC emacs-lisp
+     (use-package ag
+       :ensure t)
+	 #+END_SRC
+
 ** Tab width should always be 2
    #+BEGIN_SRC emacs-lisp
      (setq-default tab-width 2)
@@ -251,9 +528,49 @@ This is built on a preview build of Emacs 25 and I'm hoping to explore more of i
        :ensure t
        :config
        (progn
+         (require 'smartparens-config)
          (smartparens-global-mode 1)
          (smartparens-global-strict-mode 1)
          (show-smartparens-global-mode 1)))
+	 #+END_SRC
+
+** Multiple cursors
+
+	 #+BEGIN_SRC emacs-lisp
+     (use-package multiple-cursors
+       :ensure t
+       :config
+       (progn
+         (use-package hydra
+           :ensure t
+           :config
+           (progn
+             (defhydra multiple-cursors-hydra (:hint nil)
+               "
+          ^Up^            ^Down^        ^Other^
+     ----------------------------------------------
+     [_p_]   Next    [_n_]   Next    [_l_] Edit lines
+     [_P_]   Skip    [_N_]   Skip    [_a_] Mark all
+     [_M-p_] Unmark  [_M-n_] Unmark  [_r_] Mark by regexp
+     ^ ^             ^ ^             [_q_] Quit"
+     ("l" mc/edit-lines :exit t)
+     ("a" mc/mark-all-like-this :exit t)
+     ("n" mc/mark-next-like-this)
+     ("N" mc/skip-to-next-like-this)
+     ("M-n" mc/unmark-next-like-this)
+     ("p" mc/mark-previous-like-this)
+     ("P" mc/skip-to-previous-like-this)
+     ("M-p" mc/unmark-previous-like-this)
+     ("r" mc/mark-all-in-region-regexp :exit t)
+     ("q" nil))
+     (global-set-key (kbd "C-c m") 'multiple-cursors-hydra/body)
+     ))))
+	 #+END_SRC
+
+** Org code blocks
+
+	 #+BEGIN_SRC emacs-lisp
+     (setq org-src-window-setup 'current-window)
 	 #+END_SRC
 
 * Now some fun stuff
@@ -274,14 +591,17 @@ This is built on a preview build of Emacs 25 and I'm hoping to explore more of i
                helm-yas-display-key-on-canditate t
                helm-quick-update t
                helm-M-x-requires-pattern nil
-               helm-ff-skip-boring-files t)
-         (helm-mode))
+               helm-ff-skip-boring-files t))
+       :config
+       (progn
+         (helm-mode 1))
        :bind (("C-c h" . helm-mini)
               ("C-h a" . helm-apropos)
               ("C-x C-b" . helm-buffers-list)
               ("C-x b" . helm-buffers-list)
               ("M-y" . helm-show-kill-ring)
               ("M-x" . helm-M-x)
+              ("C-x C-f" . helm-find-files)
               ("C-x c o" . helm-occur)))
      (ido-mode -1)
    #+END_SRC
@@ -295,6 +615,12 @@ This is built on a preview build of Emacs 25 and I'm hoping to explore more of i
        :bind (("C-h b" . helm-descbinds)
               ("C-h w" . helm-descbinds)))
    #+END_SRC
+
+	 #+BEGIN_SRC emacs-lisp
+     (use-package helm-ag
+       :defer t
+       :ensure t)
+	 #+END_SRC
 
 ** which-key
    Gives you a popup to help remember available keybindings
@@ -343,5 +669,153 @@ This is built on a preview build of Emacs 25 and I'm hoping to explore more of i
 	 #+BEGIN_SRC emacs-lisp
      (use-package magit
        :ensure t
-       :bind ("C-x g" . magit-status))
+       :commands (
+                  magit-blame-mode
+                  magit-commit-popup
+                  magit-diff-popup
+                  magit-fetch-popup
+                  magit-log-popup
+                  magit-pull-popup
+                  magit-status)
+       :bind ("C-x g" . magit-status)
+       :config
+       (setq magit-display-buffer-function
+             (lambda (buffer)
+               (if (or
+                    ;; the original should stay alive, so we can't go fullscreen
+                    magit-display-buffer-noselect
+                    ;; don't go fullscreen for certain magit buffers if current
+                    ;; buffer is a magit buffer (we're conforming to
+                    ;; `magit-display-buffer-traditional')
+                    (and (derived-mode-p 'magit-mode)
+                         (not (memq (with-current-buffer buffer major-mode)
+                                    '(magit-process-mode
+                                      magit-revision-mode
+                                      magit-diff-mode
+                                      magit-stash-mode
+                                      magit-status-mode)))))
+                   ;; open buffer according to original magit rules
+                   (magit-display-buffer-traditional buffer)
+                 ;; open buffer in fullscreen
+                 (delete-other-windows)
+                 ;; make sure the window isn't dedicated, otherwise
+                 ;; `set-window-buffer' throws an error
+                 (set-window-dedicated-p nil nil)
+                 (set-window-buffer nil buffer)
+                 ;; return buffer's window
+                 (get-buffer-window buffer)))))
+	 #+END_SRC
+** Projectile
+
+	 #+BEGIN_SRC emacs-lisp
+     (use-package projectile
+       :ensure t
+       :diminish projectile-mode
+       :bind ("C-c p p" . projectile-switch-project)
+       :init
+       (progn
+         (setq projectile-cache-file (expand-file-name "projectile.cache" mw-savefile-dir))
+         (setq projectile-keymap-prefix (kbd "C-c p")
+               projectile-completion-system 'helm
+               projectile-enable-caching t))
+       :config
+       (projectile-global-mode))
+     (use-package helm-projectile
+       :defer t
+       :ensure t
+       :config
+       (helm-projectile-on))
+	 #+END_SRC
+** Flycheck
+
+	 #+BEGIN_SRC emacs-lisp
+     (use-package flycheck
+       :ensure t
+       :init
+       (progn
+         (add-hook 'after-init-hook #'global-flycheck-mode)))
+	 #+END_SRC
+
+** Company (auto completion)
+
+	 #+BEGIN_SRC emacs-lisp
+     (use-package company
+       :ensure t
+       :init
+       (progn
+         (add-hook 'after-init-hook 'global-company-mode)))
+	 #+END_SRC
+
+** Terminal
+
+	 #+BEGIN_SRC emacs-lisp
+     (setq system-uses-terminfo nil)
+	 #+END_SRC
+
+* Languages
+** Yaml
+
+	 #+BEGIN_SRC emacs-lisp
+     (use-package yaml-mode
+       :ensure t
+       :mode "\\.yml\\'")
+	 #+END_SRC
+
+** Elixir
+
+	 #+BEGIN_SRC emacs-lisp
+     (use-package elixir-mode
+       :ensure t
+       :defer t)
+
+     (use-package alchemist
+       :ensure t
+       :defer t)
+	 #+END_SRC
+
+** Dockerfile
+
+	 #+BEGIN_SRC emacs-lisp
+     (use-package dockerfile-mode
+       :ensure t
+       :mode "Dockerfile\\'")
+	 #+END_SRC
+** Ruby
+*** rbenv
+
+		#+BEGIN_SRC emacs-lisp
+      (use-package rbenv
+        :ensure t
+        :init
+        (progn
+          (setq rbenv-show-active-ruby-in-modeline nil))
+        :config
+        (progn
+          (global-rbenv-mode)
+          (rbenv-use-corresponding)))
+		#+END_SRC
+
+*** Projectile Rails
+
+		#+BEGIN_SRC emacs-lisp
+      (use-package projectile-rails
+        :ensure t
+        :config
+        (add-hook 'projectile-mode-hook 'projectile-rails-on))
+		#+END_SRC
+*** Rspec mode
+
+		#+BEGIN_SRC emacs-lisp
+      (use-package rspec-mode
+        :ensure t
+        :config
+        (progn
+          (add-hook 'after-init-hook 'inf-ruby-switch-setup)))
+		#+END_SRC
+** Javascript
+
+	 #+BEGIN_SRC emacs-lisp
+     (use-package js2-mode
+       :ensure t
+       :mode "\\.js\\'")
 	 #+END_SRC
